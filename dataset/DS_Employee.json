@@ -1,0 +1,37 @@
+{
+	"name": "DS_Employee",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_TestData",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "TestData"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"folderPath": "EmployeeData",
+				"container": "testdata"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"type": "String"
+			},
+			{
+				"type": "String"
+			},
+			{
+				"type": "String"
+			}
+		]
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

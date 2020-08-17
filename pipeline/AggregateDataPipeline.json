@@ -1,0 +1,48 @@
+{
+	"name": "AggregateDataPipeline",
+	"properties": {
+		"activities": [
+			{
+				"name": "PollutionDataFlow",
+				"type": "ExecuteDataFlow",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataflow": {
+						"referenceName": "PollutionDataFlow",
+						"type": "DataFlowReference",
+						"parameters": {
+							"FilterDateValue": {
+								"value": "@concat('''',formatDateTime(subtractFromTime(string(utcnow()), pipeline().parameters.LastNumberOfDays_PipeLine,'Day'),'yyyy-MM-dd'),'''')",
+								"type": "Expression"
+							},
+							"lastNumberOfDays": {
+								"value": "@pipeline().parameters.LastNumberOfDays_PipeLine",
+								"type": "Expression"
+							}
+						}
+					},
+					"compute": {
+						"coreCount": 8,
+						"computeType": "General"
+					}
+				}
+			}
+		],
+		"parameters": {
+			"LastNumberOfDays_PipeLine": {
+				"type": "int"
+			}
+		},
+		"annotations": [],
+		"lastPublishTime": "2020-08-14T03:38:55Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

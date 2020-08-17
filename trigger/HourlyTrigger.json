@@ -1,0 +1,27 @@
+{
+	"name": "HourlyTrigger",
+	"properties": {
+		"annotations": [],
+		"runtimeState": "Started",
+		"pipelines": [
+			{
+				"pipelineReference": {
+					"referenceName": "ExtractPollutionDataPipeline",
+					"type": "PipelineReference"
+				},
+				"parameters": {
+					"pollutionFileName": "IndiaPollutionData"
+				}
+			}
+		],
+		"type": "ScheduleTrigger",
+		"typeProperties": {
+			"recurrence": {
+				"frequency": "Hour",
+				"interval": 1,
+				"startTime": "2020-08-13T02:28:00Z",
+				"timeZone": "UTC"
+			}
+		}
+	}
+}

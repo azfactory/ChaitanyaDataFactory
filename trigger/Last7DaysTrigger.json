@@ -1,0 +1,36 @@
+{
+	"name": "Last7DaysTrigger",
+	"properties": {
+		"description": "Last 7 Days Trigger",
+		"annotations": [],
+		"runtimeState": "Started",
+		"pipelines": [
+			{
+				"pipelineReference": {
+					"referenceName": "AggregateDataPipeline",
+					"type": "PipelineReference"
+				},
+				"parameters": {
+					"LastNumberOfDays_PipeLine": 7
+				}
+			}
+		],
+		"type": "ScheduleTrigger",
+		"typeProperties": {
+			"recurrence": {
+				"frequency": "Day",
+				"interval": 1,
+				"startTime": "2020-08-14T05:35:00Z",
+				"timeZone": "UTC",
+				"schedule": {
+					"minutes": [
+						0
+					],
+					"hours": [
+						6
+					]
+				}
+			}
+		}
+	}
+}
