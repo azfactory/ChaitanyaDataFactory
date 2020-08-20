@@ -6,7 +6,7 @@
 		"pipelines": [
 			{
 				"pipelineReference": {
-					"referenceName": "ExtractPollutionDataPipeline1",
+					"referenceName": "ExtractPollutionDataPipeline",
 					"type": "PipelineReference"
 				},
 				"parameters": {
