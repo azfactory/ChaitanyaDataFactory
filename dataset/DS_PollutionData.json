@@ -11,7 +11,7 @@
 			"location": {
 				"type": "AzureBlobStorageLocation",
 				"folderPath": "PollutionData",
-				"container": "pollutionrawdata"
+				"container": "pollutiondata"
 			},
 			"columnDelimiter": ",",
 			"escapeChar": "\\",
