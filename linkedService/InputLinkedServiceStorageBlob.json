@@ -1,6 +1,5 @@
 {
 	"name": "InputLinkedServiceStorageBlob",
-	"type": "Microsoft.DataFactory/factories/linkedservices",
 	"properties": {
 		"description": "Pollution Data Input Blob",
 		"annotations": [],
@@ -15,5 +14,6 @@
 				"secretName": "storageconnection"
 			}
 		}
-	}
+	},
+	"type": "Microsoft.DataFactory/factories/linkedservices"
 }
