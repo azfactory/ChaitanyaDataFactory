@@ -19,14 +19,14 @@
 			"recurrence": {
 				"frequency": "Day",
 				"interval": 1,
-				"startTime": "2020-08-14T05:38:00Z",
+				"startTime": "2020-08-14T05:38:00.000Z",
 				"timeZone": "UTC",
 				"schedule": {
 					"minutes": [
-						0
+						20
 					],
 					"hours": [
-						9
+						6
 					]
 				}
 			}
