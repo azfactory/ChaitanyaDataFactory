@@ -1,5 +1,5 @@
 {
-	"name": "ExtractPollutionDataPipeline1",
+	"name": "ExtractPollutionDataPipeline",
 	"properties": {
 		"activities": [
 			{
