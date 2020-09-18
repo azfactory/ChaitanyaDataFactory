@@ -1,6 +1,7 @@
 {
 	"name": "OutputPollutionRawDataSet",
 	"properties": {
+		"description": "18 Sept",
 		"linkedServiceName": {
 			"referenceName": "OutputLinkedServiceBlob",
 			"type": "LinkedServiceReference"

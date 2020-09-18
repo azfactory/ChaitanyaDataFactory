@@ -1,6 +1,7 @@
 {
 	"name": "ExtractPollutionDataPipeline",
 	"properties": {
+		"description": "18 Sept",
 		"activities": [
 			{
 				"name": "CopyPollutionData",
