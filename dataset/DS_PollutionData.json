@@ -1,6 +1,7 @@
 {
 	"name": "DS_PollutionData",
 	"properties": {
+		"description": "18 Sept",
 		"linkedServiceName": {
 			"referenceName": "InputLinkedServiceStorageBlob",
 			"type": "LinkedServiceReference"
