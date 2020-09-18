@@ -9,7 +9,7 @@
 			"sources": [
 				{
 					"dataset": {
-						"referenceName": "DS_Employee",
+						"referenceName": "DS_Employee1",
 						"type": "DatasetReference"
 					},
 					"name": "EmployeeDataSource"
@@ -29,7 +29,7 @@
 					"name": "AggregateEmployeeData"
 				}
 			],
-			"script": "parameters{\n\tdataflow_CalDate as string (toString(minus(currentDate(),1),'dd-MM-YYYY'))\n}\nsource(output(\n\t\tName as string,\n\t\tSalary as integer,\n\t\tDept as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\twildcardPaths:['EmployeeData/** '],\n\tpartitionBy('hash', 1)) ~> EmployeeDataSource\nEmployeeDataSource aggregate(groupBy(Dept),\n\tSalary = sum(Salary)) ~> AggregateEmployeeData\nAggregateEmployeeData sink(input(\n\t\tColumn_1 as string,\n\t\tColumn_2 as string,\n\t\tColumn_3 as string,\n\t\tColumn_4 as string,\n\t\tColumn_5 as string,\n\t\tColumn_6 as string,\n\t\tColumn_7 as string,\n\t\tColumn_8 as string,\n\t\tColumn_9 as string,\n\t\tColumn_10 as string,\n\t\tColumn_11 as string\n\t),\n\tallowSchemaDrift: false,\n\tvalidateSchema: false,\n\tpartitionFileNames:['EmpAggregateData.csv'],\n\tpartitionBy('hash', 1),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> Empsink"
+			"script": "parameters{\n\tdataflow_CalDate as string (toString(minus(currentDate(),1),'dd-MM-YYYY'))\n}\nsource(output(\n\t\tName as string,\n\t\tSalary as integer,\n\t\tDept as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false,\n\twildcardPaths:['EmployeeData/** '],\n\tpartitionBy('hash', 1)) ~> EmployeeDataSource\nEmployeeDataSource aggregate(groupBy(Dept),\n\tSalary = sum(Salary)) ~> AggregateEmployeeData\nAggregateEmployeeData sink(input(\n\t\tColumn_1 as string,\n\t\tColumn_2 as string,\n\t\tColumn_3 as string,\n\t\tColumn_4 as string,\n\t\tColumn_5 as string,\n\t\tColumn_6 as string,\n\t\tColumn_7 as string,\n\t\tColumn_8 as string,\n\t\tColumn_9 as string,\n\t\tColumn_10 as string,\n\t\tColumn_11 as string\n\t),\n\tallowSchemaDrift: false,\n\tvalidateSchema: false,\n\tpartitionFileNames:['EmpAggregateData.csv'],\n\tpartitionBy('hash', 1),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> Empsink"
 		}
 	}
 }

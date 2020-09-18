@@ -1,6 +1,7 @@
 {
-	"name": "DS_Employee",
+	"name": "DS_Employee1",
 	"properties": {
+		"description": "Test Desc 18Sep",
 		"linkedServiceName": {
 			"referenceName": "LS_TestData",
 			"type": "LinkedServiceReference"
