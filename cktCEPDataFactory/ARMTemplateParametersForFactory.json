@@ -1,0 +1,39 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"value": "cktCEPDataFactory"
+		},
+		"InputLinkedServiceHttpServer_properties_typeProperties_url": {
+			"value": "https://api.data.gov.in"
+		},
+		"InputLinkedServiceStorageBlob_properties_typeProperties_connectionString_secretName": {
+			"value": "storageconnectionstring"
+		},
+		"LS_AzureKeyVault_properties_typeProperties_baseUrl": {
+			"value": "https://cktkeyvault.vault.azure.net/"
+		},
+		"LS_TestData_properties_typeProperties_connectionString_secretName": {
+			"value": "storageconnectionstring"
+		},
+		"OutputLinkedServiceBlob_properties_typeProperties_connectionString_secretName": {
+			"value": "storageconnectionstring"
+		},
+		"HourlyTrigger_properties_ExtractPollutionDataPipeline_parameters_pollutionFileName": {
+			"value": "IndiaPollutionData"
+		},
+		"Last10Days_properties_AggregateDataPipeline_parameters_LastNumberOfDays_PipeLine": {
+			"value": 10
+		},
+		"Last15Days_properties_AggregateDataPipeline_parameters_LastNumberOfDays_PipeLine": {
+			"value": 15
+		},
+		"Last30Days_properties_AggregateDataPipeline_parameters_LastNumberOfDays_PipeLine": {
+			"value": 30
+		},
+		"Last7DaysTrigger_properties_AggregateDataPipeline_parameters_LastNumberOfDays_PipeLine": {
+			"value": 7
+		}
+	}
+}

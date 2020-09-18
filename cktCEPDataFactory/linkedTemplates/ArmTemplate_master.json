@@ -1,0 +1,112 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "cktCEPDataFactory"
+		},
+		"InputLinkedServiceHttpServer_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://api.data.gov.in"
+		},
+		"InputLinkedServiceStorageBlob_properties_typeProperties_connectionString_secretName": {
+			"type": "string",
+			"defaultValue": "storageconnectionstring"
+		},
+		"LS_AzureKeyVault_properties_typeProperties_baseUrl": {
+			"type": "string",
+			"defaultValue": "https://cktkeyvault.vault.azure.net/"
+		},
+		"LS_TestData_properties_typeProperties_connectionString_secretName": {
+			"type": "string",
+			"defaultValue": "storageconnectionstring"
+		},
+		"OutputLinkedServiceBlob_properties_typeProperties_connectionString_secretName": {
+			"type": "string",
+			"defaultValue": "storageconnectionstring"
+		},
+		"HourlyTrigger_properties_ExtractPollutionDataPipeline_parameters_pollutionFileName": {
+			"type": "string",
+			"defaultValue": "IndiaPollutionData"
+		},
+		"Last10Days_properties_AggregateDataPipeline_parameters_LastNumberOfDays_PipeLine": {
+			"type": "int",
+			"defaultValue": 10
+		},
+		"Last15Days_properties_AggregateDataPipeline_parameters_LastNumberOfDays_PipeLine": {
+			"type": "int",
+			"defaultValue": 15
+		},
+		"Last30Days_properties_AggregateDataPipeline_parameters_LastNumberOfDays_PipeLine": {
+			"type": "int",
+			"defaultValue": 30
+		},
+		"Last7DaysTrigger_properties_AggregateDataPipeline_parameters_LastNumberOfDays_PipeLine": {
+			"type": "int",
+			"defaultValue": 7
+		},
+		"containerUri": {
+			"type": "string",
+			"metadata": "URI to storage account containing linked ARM templates"
+		},
+		"containerSasToken": {
+			"type": "string",
+			"metadata": "Sas token to storage account containing linked ARM templates"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "cktCEPDataFactory_ArmTemplate_0",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2018-02-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_0.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					},
+					"InputLinkedServiceHttpServer_properties_typeProperties_url": {
+						"value": "[parameters('InputLinkedServiceHttpServer_properties_typeProperties_url')]"
+					},
+					"LS_AzureKeyVault_properties_typeProperties_baseUrl": {
+						"value": "[parameters('LS_AzureKeyVault_properties_typeProperties_baseUrl')]"
+					},
+					"InputLinkedServiceStorageBlob_properties_typeProperties_connectionString_secretName": {
+						"value": "[parameters('InputLinkedServiceStorageBlob_properties_typeProperties_connectionString_secretName')]"
+					},
+					"LS_TestData_properties_typeProperties_connectionString_secretName": {
+						"value": "[parameters('LS_TestData_properties_typeProperties_connectionString_secretName')]"
+					},
+					"OutputLinkedServiceBlob_properties_typeProperties_connectionString_secretName": {
+						"value": "[parameters('OutputLinkedServiceBlob_properties_typeProperties_connectionString_secretName')]"
+					},
+					"HourlyTrigger_properties_ExtractPollutionDataPipeline_parameters_pollutionFileName": {
+						"value": "[parameters('HourlyTrigger_properties_ExtractPollutionDataPipeline_parameters_pollutionFileName')]"
+					},
+					"Last10Days_properties_AggregateDataPipeline_parameters_LastNumberOfDays_PipeLine": {
+						"value": "[parameters('Last10Days_properties_AggregateDataPipeline_parameters_LastNumberOfDays_PipeLine')]"
+					},
+					"Last15Days_properties_AggregateDataPipeline_parameters_LastNumberOfDays_PipeLine": {
+						"value": "[parameters('Last15Days_properties_AggregateDataPipeline_parameters_LastNumberOfDays_PipeLine')]"
+					},
+					"Last30Days_properties_AggregateDataPipeline_parameters_LastNumberOfDays_PipeLine": {
+						"value": "[parameters('Last30Days_properties_AggregateDataPipeline_parameters_LastNumberOfDays_PipeLine')]"
+					},
+					"Last7DaysTrigger_properties_AggregateDataPipeline_parameters_LastNumberOfDays_PipeLine": {
+						"value": "[parameters('Last7DaysTrigger_properties_AggregateDataPipeline_parameters_LastNumberOfDays_PipeLine')]"
+					}
+				}
+			},
+			"dependsOn": []
+		}
+	]
+}
