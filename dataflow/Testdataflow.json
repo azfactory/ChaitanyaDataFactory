@@ -1,6 +1,7 @@
 {
 	"name": "Testdataflow",
 	"properties": {
+		"description": "18 Sept",
 		"folder": {
 			"name": "TestDataFlow"
 		},
