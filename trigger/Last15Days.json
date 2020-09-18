@@ -1,6 +1,7 @@
 {
 	"name": "Last15Days",
 	"properties": {
+		"description": "18 Sept",
 		"annotations": [],
 		"runtimeState": "Started",
 		"pipelines": [
