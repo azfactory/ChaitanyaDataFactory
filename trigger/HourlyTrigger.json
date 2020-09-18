@@ -1,6 +1,7 @@
 {
 	"name": "HourlyTrigger",
 	"properties": {
+		"description": "18 Sept",
 		"annotations": [],
 		"runtimeState": "Started",
 		"pipelines": [
