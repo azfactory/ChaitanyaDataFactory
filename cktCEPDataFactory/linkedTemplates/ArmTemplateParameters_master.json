@@ -20,6 +20,9 @@
 		"OutputLinkedServiceBlob_properties_typeProperties_connectionString_secretName": {
 			"value": "storageconnectionstring"
 		},
+		"CommodityDataTrigger_properties_ExtractCommodityDataPipeline_parameters_commodityFileName": {
+			"value": "IndiaCommodityData"
+		},
 		"HourlyTrigger_properties_ExtractPollutionDataPipeline_parameters_pollutionFileName": {
 			"value": "IndiaPollutionData"
 		},

@@ -27,6 +27,10 @@
 			"type": "string",
 			"defaultValue": "storageconnectionstring"
 		},
+		"CommodityDataTrigger_properties_ExtractCommodityDataPipeline_parameters_commodityFileName": {
+			"type": "string",
+			"defaultValue": "IndiaCommodityData"
+		},
 		"HourlyTrigger_properties_ExtractPollutionDataPipeline_parameters_pollutionFileName": {
 			"type": "string",
 			"defaultValue": "IndiaPollutionData"
@@ -34,18 +38,6 @@
 		"Last10Days_properties_AggregateDataPipeline_parameters_LastNumberOfDays_PipeLine": {
 			"type": "int",
 			"defaultValue": 10
-		},
-		"Last15Days_properties_AggregateDataPipeline_parameters_LastNumberOfDays_PipeLine": {
-			"type": "int",
-			"defaultValue": 15
-		},
-		"Last30Days_properties_AggregateDataPipeline_parameters_LastNumberOfDays_PipeLine": {
-			"type": "int",
-			"defaultValue": 30
-		},
-		"Last7DaysTrigger_properties_AggregateDataPipeline_parameters_LastNumberOfDays_PipeLine": {
-			"type": "int",
-			"defaultValue": 7
 		}
 	},
 	"variables": {
@@ -81,6 +73,35 @@
 				}
 			},
 			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/InputCommodityDataSet')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "InputLinkedServiceHttpServer",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Commodity"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "HttpServerLocation",
+						"relativeUrl": "/resource/9ef84268-d588-465a-a308-a864a43d0070?api-key=579b464db66ec23bdd000001db6f8d31eff0408478fc83710b8c735f&format=csv&offset=0&limit=10000"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/InputLinkedServiceHttpServer')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/InputPollutionDataSet')]",
@@ -348,6 +369,48 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/OutputCommodityRawDataSet')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "OutputLinkedServiceBlob",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"fileName": {
+						"type": "string"
+					}
+				},
+				"folder": {
+					"name": "Commodity"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": {
+							"value": "@dataset().fileName",
+							"type": "Expression"
+						},
+						"folderPath": {
+							"value": "@concat('CommodityRawData', '/' , formatDateTime(utcnow(), 'yyyy') , '/' , formatDateTime(utcnow(), 'MM') , '/' , formatDateTime(utcnow(), 'MM-dd-yyyy'))",
+							"type": "Expression"
+						},
+						"container": "commoditydata"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/OutputLinkedServiceBlob')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/OutputPollutionRawDataSet')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -385,6 +448,92 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/OutputLinkedServiceBlob')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ExtractCommodityDataPipeline')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "CopyCommodityData",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 3,
+							"retryIntervalInSeconds": 600,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "DelimitedTextSource",
+								"storeSettings": {
+									"type": "HttpReadSettings",
+									"requestMethod": "GET"
+								},
+								"formatSettings": {
+									"type": "DelimitedTextReadSettings"
+								}
+							},
+							"sink": {
+								"type": "DelimitedTextSink",
+								"storeSettings": {
+									"type": "AzureBlobStorageWriteSettings"
+								},
+								"formatSettings": {
+									"type": "DelimitedTextWriteSettings",
+									"quoteAllText": true,
+									"fileExtension": ".txt"
+								}
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "InputCommodityDataSet",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "OutputCommodityRawDataSet",
+								"type": "DatasetReference",
+								"parameters": {
+									"fileName": {
+										"value": "@concat(pipeline().parameters.commodityFileName, '_' , formatDateTime(utcnow(), 'MM-dd-yyyy_hh-mm-ss') , '.csv')",
+										"type": "Expression"
+									}
+								}
+							}
+						]
+					}
+				],
+				"parameters": {
+					"commodityFileName": {
+						"type": "string"
+					}
+				},
+				"folder": {
+					"name": "Commodity"
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/InputCommodityDataSet')]",
+				"[concat(variables('factoryId'), '/datasets/OutputCommodityRawDataSet')]"
 			]
 		},
 		{
@@ -621,6 +770,38 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/CommodityDataTrigger')]",
+			"type": "Microsoft.DataFactory/factories/triggers",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"runtimeState": "Started",
+				"pipelines": [
+					{
+						"pipelineReference": {
+							"referenceName": "ExtractCommodityDataPipeline",
+							"type": "PipelineReference"
+						},
+						"parameters": {
+							"commodityFileName": "[parameters('CommodityDataTrigger_properties_ExtractCommodityDataPipeline_parameters_commodityFileName')]"
+						}
+					}
+				],
+				"type": "ScheduleTrigger",
+				"typeProperties": {
+					"recurrence": {
+						"frequency": "Hour",
+						"interval": 4,
+						"startTime": "2020-09-22T06:00:00.000Z",
+						"timeZone": "UTC"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/ExtractCommodityDataPipeline')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/HourlyTrigger')]",
 			"type": "Microsoft.DataFactory/factories/triggers",
 			"apiVersion": "2018-06-01",
@@ -682,129 +863,6 @@
 						"schedule": {
 							"minutes": [
 								10
-							],
-							"hours": [
-								6
-							]
-						}
-					}
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/pipelines/AggregateDataPipeline')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/Last15Days')]",
-			"type": "Microsoft.DataFactory/factories/triggers",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"description": "18 Sept",
-				"annotations": [],
-				"runtimeState": "Started",
-				"pipelines": [
-					{
-						"pipelineReference": {
-							"referenceName": "AggregateDataPipeline",
-							"type": "PipelineReference"
-						},
-						"parameters": {
-							"LastNumberOfDays_PipeLine": "[parameters('Last15Days_properties_AggregateDataPipeline_parameters_LastNumberOfDays_PipeLine')]"
-						}
-					}
-				],
-				"type": "ScheduleTrigger",
-				"typeProperties": {
-					"recurrence": {
-						"frequency": "Day",
-						"interval": 1,
-						"startTime": "2020-08-14T05:37:00.000Z",
-						"timeZone": "UTC",
-						"schedule": {
-							"minutes": [
-								15
-							],
-							"hours": [
-								6
-							]
-						}
-					}
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/pipelines/AggregateDataPipeline')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/Last30Days')]",
-			"type": "Microsoft.DataFactory/factories/triggers",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"description": "18 Sept",
-				"annotations": [],
-				"runtimeState": "Started",
-				"pipelines": [
-					{
-						"pipelineReference": {
-							"referenceName": "AggregateDataPipeline",
-							"type": "PipelineReference"
-						},
-						"parameters": {
-							"LastNumberOfDays_PipeLine": "[parameters('Last30Days_properties_AggregateDataPipeline_parameters_LastNumberOfDays_PipeLine')]"
-						}
-					}
-				],
-				"type": "ScheduleTrigger",
-				"typeProperties": {
-					"recurrence": {
-						"frequency": "Day",
-						"interval": 1,
-						"startTime": "2020-08-14T05:38:00.000Z",
-						"timeZone": "UTC",
-						"schedule": {
-							"minutes": [
-								20
-							],
-							"hours": [
-								6
-							]
-						}
-					}
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/pipelines/AggregateDataPipeline')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/Last7DaysTrigger')]",
-			"type": "Microsoft.DataFactory/factories/triggers",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"description": "Last 7 Days Trigger - 18 Sept",
-				"annotations": [],
-				"runtimeState": "Started",
-				"pipelines": [
-					{
-						"pipelineReference": {
-							"referenceName": "AggregateDataPipeline",
-							"type": "PipelineReference"
-						},
-						"parameters": {
-							"LastNumberOfDays_PipeLine": "[parameters('Last7DaysTrigger_properties_AggregateDataPipeline_parameters_LastNumberOfDays_PipeLine')]"
-						}
-					}
-				],
-				"type": "ScheduleTrigger",
-				"typeProperties": {
-					"recurrence": {
-						"frequency": "Day",
-						"interval": 1,
-						"startTime": "2020-08-14T05:35:00.000Z",
-						"timeZone": "UTC",
-						"schedule": {
-							"minutes": [
-								0
 							],
 							"hours": [
 								6

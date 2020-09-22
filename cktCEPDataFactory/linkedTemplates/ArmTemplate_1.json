@@ -1,0 +1,145 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "cktCEPDataFactory"
+		},
+		"Last15Days_properties_AggregateDataPipeline_parameters_LastNumberOfDays_PipeLine": {
+			"type": "int",
+			"defaultValue": 15
+		},
+		"Last30Days_properties_AggregateDataPipeline_parameters_LastNumberOfDays_PipeLine": {
+			"type": "int",
+			"defaultValue": 30
+		},
+		"Last7DaysTrigger_properties_AggregateDataPipeline_parameters_LastNumberOfDays_PipeLine": {
+			"type": "int",
+			"defaultValue": 7
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/Last15Days')]",
+			"type": "Microsoft.DataFactory/factories/triggers",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "18 Sept",
+				"annotations": [],
+				"runtimeState": "Started",
+				"pipelines": [
+					{
+						"pipelineReference": {
+							"referenceName": "AggregateDataPipeline",
+							"type": "PipelineReference"
+						},
+						"parameters": {
+							"LastNumberOfDays_PipeLine": "[parameters('Last15Days_properties_AggregateDataPipeline_parameters_LastNumberOfDays_PipeLine')]"
+						}
+					}
+				],
+				"type": "ScheduleTrigger",
+				"typeProperties": {
+					"recurrence": {
+						"frequency": "Day",
+						"interval": 1,
+						"startTime": "2020-08-14T05:37:00.000Z",
+						"timeZone": "UTC",
+						"schedule": {
+							"minutes": [
+								15
+							],
+							"hours": [
+								6
+							]
+						}
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Last30Days')]",
+			"type": "Microsoft.DataFactory/factories/triggers",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "18 Sept",
+				"annotations": [],
+				"runtimeState": "Started",
+				"pipelines": [
+					{
+						"pipelineReference": {
+							"referenceName": "AggregateDataPipeline",
+							"type": "PipelineReference"
+						},
+						"parameters": {
+							"LastNumberOfDays_PipeLine": "[parameters('Last30Days_properties_AggregateDataPipeline_parameters_LastNumberOfDays_PipeLine')]"
+						}
+					}
+				],
+				"type": "ScheduleTrigger",
+				"typeProperties": {
+					"recurrence": {
+						"frequency": "Day",
+						"interval": 1,
+						"startTime": "2020-08-14T05:38:00.000Z",
+						"timeZone": "UTC",
+						"schedule": {
+							"minutes": [
+								20
+							],
+							"hours": [
+								6
+							]
+						}
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Last7DaysTrigger')]",
+			"type": "Microsoft.DataFactory/factories/triggers",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "Last 7 Days Trigger - 18 Sept",
+				"annotations": [],
+				"runtimeState": "Started",
+				"pipelines": [
+					{
+						"pipelineReference": {
+							"referenceName": "AggregateDataPipeline",
+							"type": "PipelineReference"
+						},
+						"parameters": {
+							"LastNumberOfDays_PipeLine": "[parameters('Last7DaysTrigger_properties_AggregateDataPipeline_parameters_LastNumberOfDays_PipeLine')]"
+						}
+					}
+				],
+				"type": "ScheduleTrigger",
+				"typeProperties": {
+					"recurrence": {
+						"frequency": "Day",
+						"interval": 1,
+						"startTime": "2020-08-14T05:35:00.000Z",
+						"timeZone": "UTC",
+						"schedule": {
+							"minutes": [
+								0
+							],
+							"hours": [
+								6
+							]
+						}
+					}
+				}
+			},
+			"dependsOn": []
+		}
+	]
+}
