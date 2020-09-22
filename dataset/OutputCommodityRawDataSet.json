@@ -1,0 +1,37 @@
+{
+	"name": "OutputCommodityRawDataSet",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "OutputLinkedServiceBlob",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"fileName": {
+				"type": "string"
+			}
+		},
+		"folder": {
+			"name": "Commodity"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": {
+					"value": "@dataset().fileName",
+					"type": "Expression"
+				},
+				"folderPath": {
+					"value": "@concat('CommodityRawData', '/' , formatDateTime(utcnow(), 'yyyy') , '/' , formatDateTime(utcnow(), 'MM') , '/' , formatDateTime(utcnow(), 'MM-dd-yyyy'))",
+					"type": "Expression"
+				},
+				"container": "commoditydata"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"quoteChar": "\""
+		},
+		"schema": []
+	}
+}
