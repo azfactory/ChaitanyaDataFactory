@@ -1,6 +1,7 @@
 {
 	"name": "OutputCommodityRawDataSet",
 	"properties": {
+		"description": "17 Oct",
 		"linkedServiceName": {
 			"referenceName": "OutputLinkedServiceBlob",
 			"type": "LinkedServiceReference"
