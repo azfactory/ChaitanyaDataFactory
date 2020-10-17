@@ -1,7 +1,7 @@
 {
 	"name": "DS_AggregateData",
 	"properties": {
-		"description": "18 Sept",
+		"description": "17 Oct",
 		"linkedServiceName": {
 			"referenceName": "OutputLinkedServiceBlob",
 			"type": "LinkedServiceReference"
