@@ -1,7 +1,7 @@
 {
 	"name": "AggregateDataPipeline",
 	"properties": {
-		"description": "18  Sept",
+		"description": "17 Oct",
 		"activities": [
 			{
 				"name": "PollutionDataFlow",
