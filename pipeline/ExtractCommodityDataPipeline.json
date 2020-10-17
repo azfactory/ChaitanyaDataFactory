@@ -1,6 +1,7 @@
 {
 	"name": "ExtractCommodityDataPipeline",
 	"properties": {
+		"description": "17 Oct",
 		"activities": [
 			{
 				"name": "CopyCommodityData",
