@@ -1,7 +1,7 @@
 {
 	"name": "InputPollutionDataSet",
 	"properties": {
-		"description": "18 Sept",
+		"description": "17 Oct",
 		"linkedServiceName": {
 			"referenceName": "InputLinkedServiceHttpServer",
 			"type": "LinkedServiceReference"

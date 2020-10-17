@@ -1,6 +1,7 @@
 {
 	"name": "CommodityDataTrigger",
 	"properties": {
+		"description": "17 Oct",
 		"annotations": [],
 		"runtimeState": "Started",
 		"pipelines": [
