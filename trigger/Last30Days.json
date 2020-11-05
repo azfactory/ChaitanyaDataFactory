@@ -1,7 +1,7 @@
 {
 	"name": "Last30Days",
 	"properties": {
-		"description": "17 Oct",
+		"description": "11 Nov",
 		"annotations": [],
 		"runtimeState": "Started",
 		"pipelines": [
@@ -20,7 +20,7 @@
 			"recurrence": {
 				"frequency": "Day",
 				"interval": 1,
-				"startTime": "2020-08-14T05:38:00.000Z",
+				"startTime": "2020-08-14T05:38:00Z",
 				"timeZone": "UTC",
 				"schedule": {
 					"minutes": [
