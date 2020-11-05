@@ -1,7 +1,7 @@
 {
 	"name": "InputLinkedServiceStorageBlob",
 	"properties": {
-		"description": "Pollution Data Input Blob - 17 Oct",
+		"description": "Pollution Data Input Blob - 11 Nov",
 		"annotations": [],
 		"type": "AzureBlobStorage",
 		"typeProperties": {
