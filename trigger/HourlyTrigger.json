@@ -1,7 +1,7 @@
 {
 	"name": "HourlyTrigger",
 	"properties": {
-		"description": "17 Oct",
+		"description": "11 Nov",
 		"annotations": [],
 		"runtimeState": "Started",
 		"pipelines": [
@@ -20,7 +20,7 @@
 			"recurrence": {
 				"frequency": "Hour",
 				"interval": 1,
-				"startTime": "2020-08-13T02:28:00.000Z",
+				"startTime": "2020-08-13T02:28:00Z",
 				"timeZone": "UTC"
 			}
 		}
