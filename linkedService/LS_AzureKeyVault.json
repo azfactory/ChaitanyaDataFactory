@@ -1,11 +1,11 @@
 {
 	"name": "LS_AzureKeyVault",
 	"properties": {
-		"description": "17 Oct",
+		"description": "11 Nov",
 		"annotations": [],
 		"type": "AzureKeyVault",
 		"typeProperties": {
-			"baseUrl": "https://cktkeyvault17oct.vault.azure.net/"
+			"baseUrl": "https://cktkeyvaultnov11.vault.azure.net/"
 		}
 	},
 	"type": "Microsoft.DataFactory/factories/linkedservices"
