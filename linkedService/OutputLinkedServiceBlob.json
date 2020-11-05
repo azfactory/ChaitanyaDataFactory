@@ -13,7 +13,7 @@
 				"secretName": "storageconnectionstring"
 			}
 		},
-		"description": "17 Oct"
+		"description": "11 Nov"
 	},
 	"type": "Microsoft.DataFactory/factories/linkedservices"
 }
