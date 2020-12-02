@@ -1,0 +1,62 @@
+{
+	"name": "DS_SnowflakeTable",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "Ls_Snowflake",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "TestData"
+		},
+		"annotations": [],
+		"type": "SnowflakeTable",
+		"schema": [
+			{
+				"name": "DATABASE_NAME",
+				"type": "VARCHAR",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "DATABASE_OWNER",
+				"type": "VARCHAR",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "IS_TRANSIENT",
+				"type": "VARCHAR",
+				"precision": 3,
+				"scale": 0
+			},
+			{
+				"name": "COMMENT",
+				"type": "VARCHAR",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "CREATED",
+				"type": "TIMESTAMP_LTZ",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "LAST_ALTERED",
+				"type": "TIMESTAMP_LTZ",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "RETENTION_TIME",
+				"type": "NUMBER",
+				"precision": 38,
+				"scale": 0
+			}
+		],
+		"typeProperties": {
+			"schema": "PUBLIC",
+			"table": "EMPLOYEE"
+		}
+	}
+}
