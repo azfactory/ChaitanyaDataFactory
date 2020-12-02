@@ -37,8 +37,8 @@
 						"mappings": [
 							{
 								"source": {
-									"type": "String",
-									"ordinal": 1
+									"name": "Name",
+									"type": "String"
 								},
 								"sink": {
 									"name": "NAME",
@@ -47,8 +47,8 @@
 							},
 							{
 								"source": {
-									"type": "String",
-									"ordinal": 2
+									"name": "Age",
+									"type": "String"
 								},
 								"sink": {
 									"name": "AGE",
@@ -57,8 +57,8 @@
 							},
 							{
 								"source": {
-									"type": "String",
-									"ordinal": 3
+									"name": "Department",
+									"type": "String"
 								},
 								"sink": {
 									"name": "DEPT",
