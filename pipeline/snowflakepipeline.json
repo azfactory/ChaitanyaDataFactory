@@ -15,6 +15,16 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
+					"source": {
+						"type": "DelimitedTextSource",
+						"storeSettings": {
+							"type": "AzureBlobStorageReadSettings",
+							"recursive": true
+						},
+						"formatSettings": {
+							"type": "DelimitedTextReadSettings"
+						}
+					},
 					"sink": {
 						"type": "SnowflakeSink",
 						"importSettings": {
@@ -27,7 +37,7 @@
 						"mappings": [
 							{
 								"source": {
-									"name": "   {\"id\" : \"1201\"",
+									"name": "ID",
 									"type": "String"
 								},
 								"sink": {
@@ -37,7 +47,7 @@
 							},
 							{
 								"source": {
-									"name": " \"name\" : \"satish\"",
+									"name": "Name",
 									"type": "String"
 								},
 								"sink": {
@@ -47,7 +57,7 @@
 							},
 							{
 								"source": {
-									"name": " \"age\" : \"25\"",
+									"name": "Age",
 									"type": "String"
 								},
 								"sink": {
@@ -57,7 +67,7 @@
 							},
 							{
 								"source": {
-									"name": " \"Dept\" : \"BigData\"}",
+									"name": "Department",
 									"type": "String"
 								},
 								"sink": {
@@ -68,6 +78,12 @@
 						]
 					}
 				},
+				"inputs": [
+					{
+						"referenceName": "DS_Employee2",
+						"type": "DatasetReference"
+					}
+				],
 				"outputs": [
 					{
 						"referenceName": "DS_SnowflakeTable",
