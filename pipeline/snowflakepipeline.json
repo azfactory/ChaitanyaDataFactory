@@ -15,16 +15,6 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"source": {
-						"type": "DelimitedTextSource",
-						"storeSettings": {
-							"type": "AzureBlobStorageReadSettings",
-							"recursive": true
-						},
-						"formatSettings": {
-							"type": "DelimitedTextReadSettings"
-						}
-					},
 					"sink": {
 						"type": "SnowflakeSink",
 						"importSettings": {
@@ -78,12 +68,6 @@
 						]
 					}
 				},
-				"inputs": [
-					{
-						"referenceName": "DS_Employee2",
-						"type": "DatasetReference"
-					}
-				],
 				"outputs": [
 					{
 						"referenceName": "DS_SnowflakeTable",

@@ -14,8 +14,8 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"fileName": "emp.json",
-				"folderPath": "EmployeeData/EmployeeData",
+				"fileName": "employee.csv",
+				"folderPath": "EmployeeData/EmployeeData/EmployeeData",
 				"container": "testdata"
 			},
 			"columnDelimiter": ",",
