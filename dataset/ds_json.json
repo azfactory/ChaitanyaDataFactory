@@ -1,7 +1,6 @@
 {
-	"name": "DS_Employee2",
+	"name": "ds_json",
 	"properties": {
-		"description": "11 Nov",
 		"linkedServiceName": {
 			"referenceName": "LS_TestData",
 			"type": "LinkedServiceReference"
@@ -10,30 +9,31 @@
 			"name": "TestData"
 		},
 		"annotations": [],
-		"type": "DelimitedText",
+		"type": "Json",
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
 				"fileName": "emp.json",
 				"folderPath": "EmployeeData/EmployeeData",
 				"container": "testdata"
-			},
-			"columnDelimiter": ",",
-			"escapeChar": "\\",
-			"firstRowAsHeader": true,
-			"quoteChar": "\""
-		},
-		"schema": [
-			{
-				"type": "String"
-			},
-			{
-				"type": "String"
-			},
-			{
-				"type": "String"
 			}
-		]
-	},
-	"type": "Microsoft.DataFactory/factories/datasets"
+		},
+		"schema": {
+			"type": "object",
+			"properties": {
+				"id": {
+					"type": "string"
+				},
+				"name": {
+					"type": "string"
+				},
+				"age": {
+					"type": "string"
+				},
+				"Dept": {
+					"type": "string"
+				}
+			}
+		}
+	}
 }

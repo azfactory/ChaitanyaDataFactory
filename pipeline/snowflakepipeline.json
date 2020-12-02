@@ -25,11 +25,68 @@
 							"type": "DelimitedTextReadSettings"
 						}
 					},
-					"enableStaging": false
+					"sink": {
+						"type": "SnowflakeSink",
+						"importSettings": {
+							"type": "SnowflakeImportCopyCommand"
+						}
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "   {\"id\" : \"1201\"",
+									"type": "String"
+								},
+								"sink": {
+									"name": "ID",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": " \"name\" : \"satish\"",
+									"type": "String"
+								},
+								"sink": {
+									"name": "NAME",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": " \"age\" : \"25\"",
+									"type": "String"
+								},
+								"sink": {
+									"name": "AGE",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": " \"Dept\" : \"BigData\"}",
+									"type": "String"
+								},
+								"sink": {
+									"name": "DEPT",
+									"type": "String"
+								}
+							}
+						]
+					}
 				},
 				"inputs": [
 					{
 						"referenceName": "DS_Employee2",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "DS_SnowflakeTable",
 						"type": "DatasetReference"
 					}
 				]
