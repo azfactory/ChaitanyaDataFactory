@@ -12,45 +12,21 @@
 		"type": "SnowflakeTable",
 		"schema": [
 			{
-				"name": "DATABASE_NAME",
+				"name": "NAME",
 				"type": "VARCHAR",
 				"precision": 0,
 				"scale": 0
 			},
 			{
-				"name": "DATABASE_OWNER",
+				"name": "AGE",
 				"type": "VARCHAR",
 				"precision": 0,
 				"scale": 0
 			},
 			{
-				"name": "IS_TRANSIENT",
-				"type": "VARCHAR",
-				"precision": 3,
-				"scale": 0
-			},
-			{
-				"name": "COMMENT",
+				"name": "DEPT",
 				"type": "VARCHAR",
 				"precision": 0,
-				"scale": 0
-			},
-			{
-				"name": "CREATED",
-				"type": "TIMESTAMP_LTZ",
-				"precision": 23,
-				"scale": 3
-			},
-			{
-				"name": "LAST_ALTERED",
-				"type": "TIMESTAMP_LTZ",
-				"precision": 23,
-				"scale": 3
-			},
-			{
-				"name": "RETENTION_TIME",
-				"type": "NUMBER",
-				"precision": 38,
 				"scale": 0
 			}
 		],
