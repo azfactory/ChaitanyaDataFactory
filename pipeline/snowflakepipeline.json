@@ -37,16 +37,6 @@
 						"mappings": [
 							{
 								"source": {
-									"name": "ID",
-									"type": "String"
-								},
-								"sink": {
-									"name": "ID",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
 									"name": "Name",
 									"type": "String"
 								},
