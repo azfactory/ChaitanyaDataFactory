@@ -1,7 +1,7 @@
 {
 	"name": "Last7DaysTrigger",
 	"properties": {
-		"description": "Last 7 Days Trigger - 11 Nov",
+		"description": "Last 7 Days Trigger - 03 dec",
 		"annotations": [],
 		"runtimeState": "Started",
 		"pipelines": [
