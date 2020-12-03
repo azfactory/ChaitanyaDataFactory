@@ -11,7 +11,7 @@
 					"referenceName": "LS_AzureKeyVault",
 					"type": "LinkedServiceReference"
 				},
-				"secretName": "storageconnectionstring"
+				"secretName": "storageconnectionstringdec"
 			}
 		}
 	},
