@@ -3,7 +3,7 @@
 	"properties": {
 		"description": "Last 7 Days Trigger - 03 dec",
 		"annotations": [],
-		"runtimeState": "Started",
+		"runtimeState": "Stopped",
 		"pipelines": [
 			{
 				"pipelineReference": {
