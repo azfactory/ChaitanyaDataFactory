@@ -1,6 +1,7 @@
 {
 	"name": "OutputLinkedServiceBlob",
 	"properties": {
+		"description": "03 dec",
 		"annotations": [],
 		"type": "AzureBlobStorage",
 		"typeProperties": {
@@ -10,10 +11,9 @@
 					"referenceName": "LS_AzureKeyVault",
 					"type": "LinkedServiceReference"
 				},
-				"secretName": "storageconnectionstring"
+				"secretName": "storageconnectionstringdec"
 			}
-		},
-		"description": "11 Nov"
+		}
 	},
 	"type": "Microsoft.DataFactory/factories/linkedservices"
 }

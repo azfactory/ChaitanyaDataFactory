@@ -1,7 +1,7 @@
 {
 	"name": "InputLinkedServiceStorageBlob",
 	"properties": {
-		"description": "Pollution Data Input Blob - 11 Nov",
+		"description": "Pollution Data Input Blob - 03 dec",
 		"annotations": [],
 		"type": "AzureBlobStorage",
 		"typeProperties": {
@@ -11,7 +11,7 @@
 					"referenceName": "LS_AzureKeyVault",
 					"type": "LinkedServiceReference"
 				},
-				"secretName": "storageconnectionstring"
+				"secretName": "storageconnectionstringdec"
 			}
 		}
 	},
