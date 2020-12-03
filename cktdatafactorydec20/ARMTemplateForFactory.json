@@ -1,0 +1,1029 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "cktdatafactorydec20"
+		},
+		"LS_TestData_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'LS_TestData'"
+		},
+		"InputLinkedServiceHttpServer_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://api.data.gov.in"
+		},
+		"InputLinkedServiceStorageBlob_properties_typeProperties_connectionString_secretName": {
+			"type": "string",
+			"defaultValue": "storageconnectionstringdec"
+		},
+		"LS_AzureKeyVault_properties_typeProperties_baseUrl": {
+			"type": "string",
+			"defaultValue": "https://cktkeyvaultdec2020.vault.azure.net/"
+		},
+		"Ls_Snowflake_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'Ls_Snowflake'"
+		},
+		"OutputLinkedServiceBlob_properties_typeProperties_connectionString_secretName": {
+			"type": "string",
+			"defaultValue": "storageconnectionstringdec"
+		},
+		"CommodityDataTrigger_properties_ExtractCommodityDataPipeline_parameters_commodityFileName": {
+			"type": "string",
+			"defaultValue": "IndiaCommodityData"
+		},
+		"HourlyTrigger_properties_ExtractPollutionDataPipeline_parameters_pollutionFileName": {
+			"type": "string",
+			"defaultValue": "IndiaPollutionData"
+		},
+		"Last10Days_properties_AggregateDataPipeline_parameters_LastNumberOfDays_PipeLine": {
+			"type": "int",
+			"defaultValue": 10
+		},
+		"Last15Days_properties_AggregateDataPipeline_parameters_LastNumberOfDays_PipeLine": {
+			"type": "int",
+			"defaultValue": 15
+		},
+		"Last30Days_properties_AggregateDataPipeline_parameters_LastNumberOfDays_PipeLine": {
+			"type": "int",
+			"defaultValue": 30
+		},
+		"Last7DaysTrigger_properties_AggregateDataPipeline_parameters_LastNumberOfDays_PipeLine": {
+			"type": "int",
+			"defaultValue": 7
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/AggregateDataPipeline')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "03 dec",
+				"activities": [
+					{
+						"name": "PollutionDataFlow",
+						"type": "ExecuteDataFlow",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "PollutionDataFlow",
+								"type": "DataFlowReference",
+								"parameters": {
+									"FilterDateValue": {
+										"value": "@concat('''',formatDateTime(subtractFromTime(string(utcnow()), pipeline().parameters.LastNumberOfDays_PipeLine,'Day'),'yyyy-MM-dd'),'''')",
+										"type": "Expression"
+									},
+									"lastNumberOfDays": {
+										"value": "@pipeline().parameters.LastNumberOfDays_PipeLine",
+										"type": "Expression"
+									}
+								},
+								"datasetParameters": {
+									"pollutiondataSource": {},
+									"SinkAggregateData": {}
+								}
+							},
+							"staging": {},
+							"compute": {
+								"coreCount": 8,
+								"computeType": "General"
+							},
+							"traceLevel": "Fine"
+						}
+					}
+				],
+				"parameters": {
+					"LastNumberOfDays_PipeLine": {
+						"type": "int"
+					}
+				},
+				"annotations": [],
+				"lastPublishTime": "2020-08-14T03:38:55Z"
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/dataflows/PollutionDataFlow')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ExtractCommodityDataPipeline')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "03 dec",
+				"activities": [
+					{
+						"name": "CopyCommodityData",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 3,
+							"retryIntervalInSeconds": 600,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "DelimitedTextSource",
+								"storeSettings": {
+									"type": "HttpReadSettings",
+									"requestMethod": "GET"
+								},
+								"formatSettings": {
+									"type": "DelimitedTextReadSettings"
+								}
+							},
+							"sink": {
+								"type": "DelimitedTextSink",
+								"storeSettings": {
+									"type": "AzureBlobStorageWriteSettings"
+								},
+								"formatSettings": {
+									"type": "DelimitedTextWriteSettings",
+									"quoteAllText": true,
+									"fileExtension": ".txt"
+								}
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "InputCommodityDataSet",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "OutputCommodityRawDataSet",
+								"type": "DatasetReference",
+								"parameters": {
+									"fileName": {
+										"value": "@concat(pipeline().parameters.commodityFileName, '_' , formatDateTime(utcnow(), 'MM-dd-yyyy_hh-mm-ss') , '.csv')",
+										"type": "Expression"
+									}
+								}
+							}
+						]
+					}
+				],
+				"parameters": {
+					"commodityFileName": {
+						"type": "string"
+					}
+				},
+				"folder": {
+					"name": "Commodity"
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/InputCommodityDataSet')]",
+				"[concat(variables('factoryId'), '/datasets/OutputCommodityRawDataSet')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ExtractPollutionDataPipeline')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "03 dec",
+				"activities": [
+					{
+						"name": "CopyPollutionData",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 3,
+							"retryIntervalInSeconds": 600,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "DelimitedTextSource",
+								"storeSettings": {
+									"type": "HttpReadSettings",
+									"requestMethod": "GET"
+								},
+								"formatSettings": {
+									"type": "DelimitedTextReadSettings"
+								}
+							},
+							"sink": {
+								"type": "DelimitedTextSink",
+								"storeSettings": {
+									"type": "AzureBlobStorageWriteSettings"
+								},
+								"formatSettings": {
+									"type": "DelimitedTextWriteSettings",
+									"quoteAllText": true,
+									"fileExtension": ".csv"
+								}
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "InputPollutionDataSet",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "OutputPollutionRawDataSet",
+								"type": "DatasetReference",
+								"parameters": {
+									"fileName": {
+										"value": "@concat(pipeline().parameters.pollutionFileName, '_' , formatDateTime(utcnow(), 'MM-dd-yyyy_hh-mm-ss') , '.csv')",
+										"type": "Expression"
+									}
+								}
+							}
+						]
+					}
+				],
+				"parameters": {
+					"pollutionFileName": {
+						"type": "string"
+					}
+				},
+				"annotations": [],
+				"lastPublishTime": "2020-08-16T05:58:32Z"
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/InputPollutionDataSet')]",
+				"[concat(variables('factoryId'), '/datasets/OutputPollutionRawDataSet')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_AggregateData')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "03 dec",
+				"linkedServiceName": {
+					"referenceName": "OutputLinkedServiceBlob",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"folderPath": "outputdata",
+						"container": "pollutiondata"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/OutputLinkedServiceBlob')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_Employee2')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "03 dec",
+				"linkedServiceName": {
+					"referenceName": "LS_TestData",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "TestData"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "employee.csv",
+						"folderPath": "EmployeeData/EmployeeData/EmployeeData",
+						"container": "testdata"
+					},
+					"columnDelimiter": ",",
+					"rowDelimiter": "\r\n",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/LS_TestData')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_PollutionData')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "03 dec",
+				"linkedServiceName": {
+					"referenceName": "InputLinkedServiceStorageBlob",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"folderPath": "PollutionData",
+						"container": "pollutiondata"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/InputLinkedServiceStorageBlob')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/InputCommodityDataSet')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "03 dec",
+				"linkedServiceName": {
+					"referenceName": "InputLinkedServiceHttpServer",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Commodity"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "HttpServerLocation",
+						"relativeUrl": "/resource/9ef84268-d588-465a-a308-a864a43d0070?api-key=579b464db66ec23bdd000001db6f8d31eff0408478fc83710b8c735f&format=csv&offset=0&limit=10000"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/InputLinkedServiceHttpServer')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/InputPollutionDataSet')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "03 dec",
+				"linkedServiceName": {
+					"referenceName": "InputLinkedServiceHttpServer",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "HttpServerLocation",
+						"relativeUrl": "/resource/3b01bcb8-0b14-4abf-b6f2-c1bfd384ba69?api-key=579b464db66ec23bdd000001db6f8d31eff0408478fc83710b8c735f&format=csv&offset=100&limit=2000&filters=New%20Delhi"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": false,
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/InputLinkedServiceHttpServer')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/OutputCommodityRawDataSet')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "03 dec",
+				"linkedServiceName": {
+					"referenceName": "OutputLinkedServiceBlob",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"fileName": {
+						"type": "string"
+					}
+				},
+				"folder": {
+					"name": "Commodity"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": {
+							"value": "@dataset().fileName",
+							"type": "Expression"
+						},
+						"folderPath": {
+							"value": "@concat('CommodityRawData', '/' , formatDateTime(utcnow(), 'yyyy') , '/' , formatDateTime(utcnow(), 'MM') , '/' , formatDateTime(utcnow(), 'MM-dd-yyyy'))",
+							"type": "Expression"
+						},
+						"container": "commoditydata"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/OutputLinkedServiceBlob')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/OutputPollutionRawDataSet')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "03 dec",
+				"linkedServiceName": {
+					"referenceName": "OutputLinkedServiceBlob",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"fileName": {
+						"type": "string"
+					}
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": {
+							"value": "@dataset().fileName",
+							"type": "Expression"
+						},
+						"folderPath": {
+							"value": "@concat('PollutionRawData', '/' , formatDateTime(utcnow(), 'yyyy') , '/' , formatDateTime(utcnow(), 'MM') , '/' , formatDateTime(utcnow(), 'MM-dd-yyyy'))",
+							"type": "Expression"
+						},
+						"container": "pollutiondata"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/OutputLinkedServiceBlob')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/InputLinkedServiceHttpServer')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "03 Dec",
+				"annotations": [],
+				"type": "HttpServer",
+				"typeProperties": {
+					"url": "[parameters('InputLinkedServiceHttpServer_properties_typeProperties_url')]",
+					"enableServerCertificateValidation": false,
+					"authenticationType": "Anonymous"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/InputLinkedServiceStorageBlob')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "Pollution Data Input Blob - 03 dec",
+				"annotations": [],
+				"type": "AzureBlobStorage",
+				"typeProperties": {
+					"connectionString": {
+						"type": "AzureKeyVaultSecret",
+						"store": {
+							"referenceName": "LS_AzureKeyVault",
+							"type": "LinkedServiceReference"
+						},
+						"secretName": "[parameters('InputLinkedServiceStorageBlob_properties_typeProperties_connectionString_secretName')]"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/LS_AzureKeyVault')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/LS_AzureKeyVault')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "03 dec",
+				"annotations": [],
+				"type": "AzureKeyVault",
+				"typeProperties": {
+					"baseUrl": "[parameters('LS_AzureKeyVault_properties_typeProperties_baseUrl')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/LS_TestData')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "11 Nov",
+				"annotations": [],
+				"type": "AzureBlobStorage",
+				"typeProperties": {
+					"connectionString": "[parameters('LS_TestData_connectionString')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Ls_Snowflake')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "Snowflake",
+				"typeProperties": {
+					"connectionString": "[parameters('Ls_Snowflake_connectionString')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/OutputLinkedServiceBlob')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "03 dec",
+				"annotations": [],
+				"type": "AzureBlobStorage",
+				"typeProperties": {
+					"connectionString": {
+						"type": "AzureKeyVaultSecret",
+						"store": {
+							"referenceName": "LS_AzureKeyVault",
+							"type": "LinkedServiceReference"
+						},
+						"secretName": "[parameters('OutputLinkedServiceBlob_properties_typeProperties_connectionString_secretName')]"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/LS_AzureKeyVault')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/CommodityDataTrigger')]",
+			"type": "Microsoft.DataFactory/factories/triggers",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "03 dec",
+				"annotations": [],
+				"runtimeState": "Started",
+				"pipelines": [
+					{
+						"pipelineReference": {
+							"referenceName": "ExtractCommodityDataPipeline",
+							"type": "PipelineReference"
+						},
+						"parameters": {
+							"commodityFileName": "[parameters('CommodityDataTrigger_properties_ExtractCommodityDataPipeline_parameters_commodityFileName')]"
+						}
+					}
+				],
+				"type": "ScheduleTrigger",
+				"typeProperties": {
+					"recurrence": {
+						"frequency": "Hour",
+						"interval": 4,
+						"startTime": "2020-09-22T06:00:00Z",
+						"timeZone": "UTC"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/ExtractCommodityDataPipeline')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/HourlyTrigger')]",
+			"type": "Microsoft.DataFactory/factories/triggers",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "03 dec",
+				"annotations": [],
+				"runtimeState": "Started",
+				"pipelines": [
+					{
+						"pipelineReference": {
+							"referenceName": "ExtractPollutionDataPipeline",
+							"type": "PipelineReference"
+						},
+						"parameters": {
+							"pollutionFileName": "[parameters('HourlyTrigger_properties_ExtractPollutionDataPipeline_parameters_pollutionFileName')]"
+						}
+					}
+				],
+				"type": "ScheduleTrigger",
+				"typeProperties": {
+					"recurrence": {
+						"frequency": "Hour",
+						"interval": 1,
+						"startTime": "2020-08-13T02:28:00Z",
+						"timeZone": "UTC"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/ExtractPollutionDataPipeline')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Last10Days')]",
+			"type": "Microsoft.DataFactory/factories/triggers",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "03 dec",
+				"annotations": [],
+				"runtimeState": "Started",
+				"pipelines": [
+					{
+						"pipelineReference": {
+							"referenceName": "AggregateDataPipeline",
+							"type": "PipelineReference"
+						},
+						"parameters": {
+							"LastNumberOfDays_PipeLine": "[parameters('Last10Days_properties_AggregateDataPipeline_parameters_LastNumberOfDays_PipeLine')]"
+						}
+					}
+				],
+				"type": "ScheduleTrigger",
+				"typeProperties": {
+					"recurrence": {
+						"frequency": "Day",
+						"interval": 1,
+						"startTime": "2020-08-14T05:37:00Z",
+						"timeZone": "UTC",
+						"schedule": {
+							"minutes": [
+								10
+							],
+							"hours": [
+								6
+							]
+						}
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/AggregateDataPipeline')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Last15Days')]",
+			"type": "Microsoft.DataFactory/factories/triggers",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "03 dec",
+				"annotations": [],
+				"runtimeState": "Started",
+				"pipelines": [
+					{
+						"pipelineReference": {
+							"referenceName": "AggregateDataPipeline",
+							"type": "PipelineReference"
+						},
+						"parameters": {
+							"LastNumberOfDays_PipeLine": "[parameters('Last15Days_properties_AggregateDataPipeline_parameters_LastNumberOfDays_PipeLine')]"
+						}
+					}
+				],
+				"type": "ScheduleTrigger",
+				"typeProperties": {
+					"recurrence": {
+						"frequency": "Day",
+						"interval": 1,
+						"startTime": "2020-08-14T05:37:00Z",
+						"timeZone": "UTC",
+						"schedule": {
+							"minutes": [
+								15
+							],
+							"hours": [
+								6
+							]
+						}
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/AggregateDataPipeline')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Last30Days')]",
+			"type": "Microsoft.DataFactory/factories/triggers",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "03 dec",
+				"annotations": [],
+				"runtimeState": "Started",
+				"pipelines": [
+					{
+						"pipelineReference": {
+							"referenceName": "AggregateDataPipeline",
+							"type": "PipelineReference"
+						},
+						"parameters": {
+							"LastNumberOfDays_PipeLine": "[parameters('Last30Days_properties_AggregateDataPipeline_parameters_LastNumberOfDays_PipeLine')]"
+						}
+					}
+				],
+				"type": "ScheduleTrigger",
+				"typeProperties": {
+					"recurrence": {
+						"frequency": "Day",
+						"interval": 1,
+						"startTime": "2020-08-14T05:38:00Z",
+						"timeZone": "UTC",
+						"schedule": {
+							"minutes": [
+								20
+							],
+							"hours": [
+								6
+							]
+						}
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/AggregateDataPipeline')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Last7DaysTrigger')]",
+			"type": "Microsoft.DataFactory/factories/triggers",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "Last 7 Days Trigger - 03 dec",
+				"annotations": [],
+				"runtimeState": "Started",
+				"pipelines": [
+					{
+						"pipelineReference": {
+							"referenceName": "AggregateDataPipeline",
+							"type": "PipelineReference"
+						},
+						"parameters": {
+							"LastNumberOfDays_PipeLine": "[parameters('Last7DaysTrigger_properties_AggregateDataPipeline_parameters_LastNumberOfDays_PipeLine')]"
+						}
+					}
+				],
+				"type": "ScheduleTrigger",
+				"typeProperties": {
+					"recurrence": {
+						"frequency": "Day",
+						"interval": 1,
+						"startTime": "2020-08-14T05:35:00Z",
+						"timeZone": "UTC",
+						"schedule": {
+							"minutes": [
+								0
+							],
+							"hours": [
+								6
+							]
+						}
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/AggregateDataPipeline')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/PollutionDataFlow')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "03 dec",
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "DS_PollutionData",
+								"type": "DatasetReference"
+							},
+							"name": "pollutiondataSource"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "DS_AggregateData",
+								"type": "DatasetReference"
+							},
+							"name": "SinkAggregateData"
+						}
+					],
+					"transformations": [
+						{
+							"name": "AggregatePollutionData"
+						},
+						{
+							"name": "LastUpdatedDateStream"
+						},
+						{
+							"name": "FilteredData"
+						},
+						{
+							"name": "SortPollutionData"
+						}
+					],
+					"script": "parameters{\n\tFilterDateValue as string,\n\tlastNumberOfDays as integer\n}\nsource(output(\n\t\tid as integer,\n\t\tcountry as string,\n\t\tstate as string,\n\t\tcity as string,\n\t\tstation as string,\n\t\tlast_update as string,\n\t\tpollutant_id as string,\n\t\tpollutant_min as integer,\n\t\tpollutant_max as integer,\n\t\tpollutant_avg as integer,\n\t\tpollutant_unit as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false,\n\twildcardPaths:['PollutionRawData/**'],\n\tpartitionBy('hash', 1)) ~> pollutiondataSource\nFilteredData aggregate(groupBy(station,\n\t\tpollutant_id,\n\t\tcity,\n\t\tstate),\n\tpollutant_min = min(pollutant_min),\n\t\tpollutant_max = max(pollutant_max),\n\t\tpollutant_avg = avg(pollutant_avg),\n\tpartitionBy('hash', 1)) ~> AggregatePollutionData\npollutiondataSource derive(LastUpdatedDate = toDate(last_update,'dd-MM-yyyy')) ~> LastUpdatedDateStream\nLastUpdatedDateStream filter(LastUpdatedDate >= toDate($FilterDateValue,'yyyy-MM-dd')) ~> FilteredData\nAggregatePollutionData sort(asc(city, true),\n\tasc(station, true)) ~> SortPollutionData\nSortPollutionData sink(input(\n\t\tColumn_1 as string,\n\t\tColumn_2 as string,\n\t\tColumn_3 as string,\n\t\tColumn_4 as string,\n\t\tColumn_5 as string,\n\t\tColumn_6 as string,\n\t\tColumn_7 as string,\n\t\tColumn_8 as string,\n\t\tColumn_9 as string,\n\t\tColumn_10 as string,\n\t\tColumn_11 as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tpartitionFileNames:[(concat('Last_', toString($lastNumberOfDays), '_dayPollutionData.csv'))],\n\tpartitionBy('hash', 1)) ~> SinkAggregateData"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/DS_PollutionData')]",
+				"[concat(variables('factoryId'), '/datasets/DS_AggregateData')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Testdataflow')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "03 dec",
+				"folder": {
+					"name": "TestDataFlow"
+				},
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "DS_Employee2",
+								"type": "DatasetReference"
+							},
+							"name": "EmployeeDataSource"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "DS_AggregateData",
+								"type": "DatasetReference"
+							},
+							"name": "Empsink"
+						}
+					],
+					"transformations": [
+						{
+							"name": "AggregateEmployeeData"
+						}
+					],
+					"script": "parameters{\n\tdataflow_CalDate as string (toString(minus(currentDate(),1),'dd-MM-YYYY'))\n}\nsource(output(\n\t\tName as string,\n\t\tSalary as integer,\n\t\tDept as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false,\n\twildcardPaths:['EmployeeData/** '],\n\tpartitionBy('hash', 1)) ~> EmployeeDataSource\nEmployeeDataSource aggregate(groupBy(Dept),\n\tSalary = sum(Salary)) ~> AggregateEmployeeData\nAggregateEmployeeData sink(input(\n\t\tColumn_1 as string,\n\t\tColumn_2 as string,\n\t\tColumn_3 as string,\n\t\tColumn_4 as string,\n\t\tColumn_5 as string,\n\t\tColumn_6 as string,\n\t\tColumn_7 as string,\n\t\tColumn_8 as string,\n\t\tColumn_9 as string,\n\t\tColumn_10 as string,\n\t\tColumn_11 as string\n\t),\n\tallowSchemaDrift: false,\n\tvalidateSchema: false,\n\tpartitionFileNames:['EmpAggregateData.csv'],\n\tpartitionBy('hash', 1),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> Empsink"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/DS_Employee2')]",
+				"[concat(variables('factoryId'), '/datasets/DS_AggregateData')]"
+			]
+		}
+	]
+}
