@@ -1,7 +1,7 @@
 {
 	"name": "OutputLinkedServiceBlob",
 	"properties": {
-		"description": "11 Dec",
+		"description": "03 dec",
 		"annotations": [],
 		"type": "AzureBlobStorage",
 		"typeProperties": {
