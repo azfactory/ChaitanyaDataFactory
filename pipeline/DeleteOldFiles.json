@@ -18,13 +18,17 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataset": {
-						"referenceName": "InputPollutionDataSet",
+						"referenceName": "DS_PollutionData",
 						"type": "DatasetReference"
 					},
-					"fieldList": [],
+					"fieldList": [
+						"childItems"
+					],
 					"storeSettings": {
-						"type": "HttpReadSettings",
-						"requestMethod": "GET"
+						"type": "AzureBlobStorageReadSettings",
+						"modifiedDatetimeStart": "2022-11-01T00:00:00.255Z",
+						"modifiedDatetimeEnd": "2022-10-31T00:00:00.000Z",
+						"enablePartitionDiscovery": false
 					},
 					"formatSettings": {
 						"type": "DelimitedTextReadSettings"
