@@ -1,0 +1,9 @@
+{
+	"name": "DeleteOldFiles",
+	"properties": {
+		"folder": {
+			"name": "Learning"
+		},
+		"annotations": []
+	}
+}
