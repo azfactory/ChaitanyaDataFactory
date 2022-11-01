@@ -5,7 +5,7 @@
 		"activities": [
 			{
 				"name": "ReadAllFiles",
-				"description": "Read the meta data of all files",
+				"description": "Read the metadata of all files",
 				"type": "GetMetadata",
 				"dependsOn": [],
 				"policy": {
@@ -15,7 +15,21 @@
 					"secureOutput": false,
 					"secureInput": false
 				},
-				"userProperties": []
+				"userProperties": [],
+				"typeProperties": {
+					"dataset": {
+						"referenceName": "InputPollutionDataSet",
+						"type": "DatasetReference"
+					},
+					"fieldList": [],
+					"storeSettings": {
+						"type": "HttpReadSettings",
+						"requestMethod": "GET"
+					},
+					"formatSettings": {
+						"type": "DelimitedTextReadSettings"
+					}
+				}
 			}
 		],
 		"folder": {
