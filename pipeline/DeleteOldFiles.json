@@ -1,6 +1,23 @@
 {
 	"name": "DeleteOldFiles",
 	"properties": {
+		"description": "This is for delete files that are older than certain days ",
+		"activities": [
+			{
+				"name": "ReadAllFiles",
+				"description": "Read the meta data of all files",
+				"type": "GetMetadata",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": []
+			}
+		],
 		"folder": {
 			"name": "Learning"
 		},
