@@ -22,11 +22,10 @@
 						"type": "DatasetReference"
 					},
 					"fieldList": [
-						"childItems"
+						"itemName"
 					],
 					"storeSettings": {
 						"type": "AzureBlobFSReadSettings",
-						"modifiedDatetimeEnd": "2022-10-31T00:00:00.000Z",
 						"enablePartitionDiscovery": false
 					},
 					"formatSettings": {
