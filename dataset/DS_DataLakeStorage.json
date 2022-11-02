@@ -10,7 +10,7 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobFSLocation",
-				"folderPath": "PollutionRawData",
+				"folderPath": "PollutionRawData/",
 				"fileSystem": "pollutiondata"
 			},
 			"columnDelimiter": ",",
