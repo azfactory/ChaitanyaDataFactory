@@ -59,7 +59,10 @@
 							"userProperties": [],
 							"typeProperties": {
 								"variableName": "FileName",
-								"value": "Test"
+								"value": {
+									"value": "@item().itemName",
+									"type": "Expression"
+								}
 							}
 						}
 					]
