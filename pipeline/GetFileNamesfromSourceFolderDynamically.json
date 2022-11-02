@@ -1,5 +1,5 @@
 {
-	"name": "DeleteOldFiles",
+	"name": "GetFileNamesfromSourceFolderDynamically",
 	"properties": {
 		"description": "This is for delete files that are older than certain days ",
 		"activities": [
@@ -26,6 +26,7 @@
 					],
 					"storeSettings": {
 						"type": "AzureBlobStorageReadSettings",
+						"recursive": true,
 						"modifiedDatetimeStart": "2022-11-01T00:00:00.255Z",
 						"modifiedDatetimeEnd": "2022-10-31T00:00:00.000Z",
 						"enablePartitionDiscovery": false
