@@ -10,7 +10,6 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobFSLocation",
-				"fileName": "PollutionData_11-02-2022_03-23-58.csv",
 				"folderPath": "PollutionRawData/2022/11/11-02-2022",
 				"fileSystem": "pollutiondata"
 			},
