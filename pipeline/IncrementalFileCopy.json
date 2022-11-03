@@ -20,7 +20,7 @@
 					"source": {
 						"type": "DelimitedTextSource",
 						"storeSettings": {
-							"type": "AzureBlobStorageReadSettings",
+							"type": "AzureBlobFSReadSettings",
 							"recursive": true,
 							"modifiedDatetimeEnd": "2022-11-03T00:00:00.000Z",
 							"enablePartitionDiscovery": false
@@ -53,11 +53,8 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "OutputPollutionRawDataSet",
-						"type": "DatasetReference",
-						"parameters": {
-							"fileName": "Test"
-						}
+						"referenceName": "DS_DataLakeStorage",
+						"type": "DatasetReference"
 					}
 				],
 				"outputs": [
