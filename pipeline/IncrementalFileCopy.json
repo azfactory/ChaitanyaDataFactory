@@ -21,7 +21,10 @@
 						"type": "DelimitedTextSource",
 						"storeSettings": {
 							"type": "AzureBlobFSReadSettings",
-							"fileListPath": "pollutiondata/PollutionRawData/2022/11/11-03-2022",
+							"recursive": true,
+							"modifiedDatetimeEnd": "2022-11-03T00:00:00.000Z",
+							"wildcardFolderPath": "PollutionRawData/2022/11",
+							"wildcardFileName": "*",
 							"enablePartitionDiscovery": false
 						},
 						"formatSettings": {
