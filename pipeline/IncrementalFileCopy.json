@@ -1,0 +1,10 @@
+{
+	"name": "IncrementalFileCopy",
+	"properties": {
+		"description": "Incrementally copy new and changed files based on Last Modified Date in Azure Data Factory",
+		"folder": {
+			"name": "Learning"
+		},
+		"annotations": []
+	}
+}
