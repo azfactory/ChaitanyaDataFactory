@@ -20,7 +20,7 @@
 					"source": {
 						"type": "DelimitedTextSource",
 						"storeSettings": {
-							"type": "AzureBlobFSReadSettings",
+							"type": "AzureBlobStorageReadSettings",
 							"recursive": true,
 							"modifiedDatetimeEnd": "2022-11-03T00:00:00.000Z",
 							"wildcardFolderPath": "PollutionRawData/2022/11",
@@ -55,8 +55,11 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "DS_DataLakeStorage",
-						"type": "DatasetReference"
+						"referenceName": "OutputPollutionRawDataSet",
+						"type": "DatasetReference",
+						"parameters": {
+							"fileName": "Test"
+						}
 					}
 				],
 				"outputs": [
