@@ -1,0 +1,10 @@
+{
+	"name": "DeleteOldFiles",
+	"properties": {
+		"description": "Delete old files based upon the last modified date ",
+		"folder": {
+			"name": "Learning"
+		},
+		"annotations": []
+	}
+}
