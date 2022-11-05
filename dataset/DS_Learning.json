@@ -5,6 +5,11 @@
 			"referenceName": "LS_LearningBlobStorage",
 			"type": "LinkedServiceReference"
 		},
+		"parameters": {
+			"toBeDeleteFileName": {
+				"type": "String"
+			}
+		},
 		"folder": {
 			"name": "Learning"
 		},
@@ -13,6 +18,10 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
+				"fileName": {
+					"value": "@dataset().toBeDeleteFileName",
+					"type": "Expression"
+				},
 				"folderPath": "Pollution Data/18Oct2022",
 				"container": "cktcontainer"
 			},
