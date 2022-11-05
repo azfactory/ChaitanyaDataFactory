@@ -21,14 +21,10 @@
 						"type": "DatasetReference"
 					},
 					"fieldList": [
-						"childItems"
+						"lastModified"
 					],
 					"storeSettings": {
 						"type": "AzureBlobStorageReadSettings",
-						"modifiedDatetimeEnd": {
-							"value": "@adddays(utcnow(),-10)",
-							"type": "Expression"
-						},
 						"enablePartitionDiscovery": false
 					},
 					"formatSettings": {
