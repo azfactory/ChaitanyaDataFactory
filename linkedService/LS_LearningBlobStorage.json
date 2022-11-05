@@ -1,0 +1,16 @@
+{
+	"name": "LS_LearningBlobStorage",
+	"properties": {
+		"description": "This is for learning - Created as BLOB ",
+		"annotations": [],
+		"type": "AzureBlobStorage",
+		"typeProperties": {
+			"serviceEndpoint": "https://cktstorage.blob.core.windows.net/",
+			"credential": {
+				"referenceName": "CKTcredential",
+				"type": "CredentialReference"
+			},
+			"accountKind": "StorageV2"
+		}
+	}
+}
