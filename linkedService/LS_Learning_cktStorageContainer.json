@@ -1,0 +1,22 @@
+{
+	"name": "LS_Learning_cktStorageContainer",
+	"properties": {
+		"description": "This is a learning LS ",
+		"annotations": [],
+		"type": "AzureBlobFS",
+		"typeProperties": {
+			"url": "https://cktstorage.dfs.core.windows.net/",
+			"tenant": "b6798e4b-0a81-4604-a9b4-25cdcc7ec6bc",
+			"servicePrincipalId": "6e5f0e8b-772e-4b30-9f73-785ab5bf00fa",
+			"servicePrincipalCredentialType": "ServicePrincipalKey",
+			"servicePrincipalCredential": {
+				"type": "AzureKeyVaultSecret",
+				"store": {
+					"referenceName": "LS_AzureKeyVault",
+					"type": "LinkedServiceReference"
+				},
+				"secretName": "cktsecretkeyvault"
+			}
+		}
+	}
+}
