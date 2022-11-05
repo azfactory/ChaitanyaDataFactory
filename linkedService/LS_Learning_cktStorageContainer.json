@@ -6,7 +6,6 @@
 		"type": "AzureBlobFS",
 		"typeProperties": {
 			"url": "https://cktstorage.dfs.core.windows.net/",
-			"servicePrincipalCredentialType": "ServicePrincipalKey",
 			"credential": {
 				"referenceName": "CKTcredential",
 				"type": "CredentialReference"
