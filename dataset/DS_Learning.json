@@ -1,8 +1,8 @@
 {
-	"name": "DelimitedText1",
+	"name": "DS_Learning",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "InputLinkedServiceStorageBlob",
+			"referenceName": "LS_LearningBlobStorage",
 			"type": "LinkedServiceReference"
 		},
 		"folder": {
@@ -12,7 +12,9 @@
 		"type": "DelimitedText",
 		"typeProperties": {
 			"location": {
-				"type": "AzureBlobStorageLocation"
+				"type": "AzureBlobStorageLocation",
+				"folderPath": "Pollution Data/18Oct2022",
+				"container": "cktcontainer"
 			},
 			"columnDelimiter": ",",
 			"escapeChar": "\\",
