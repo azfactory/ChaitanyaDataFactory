@@ -17,7 +17,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataset": {
-						"referenceName": "DS_Learning",
+						"referenceName": "DS_Learning_Storage",
 						"type": "DatasetReference"
 					},
 					"fieldList": [
@@ -25,6 +25,7 @@
 					],
 					"storeSettings": {
 						"type": "AzureBlobStorageReadSettings",
+						"recursive": true,
 						"enablePartitionDiscovery": false
 					},
 					"formatSettings": {
@@ -55,7 +56,10 @@
 							"name": "Set variable1",
 							"type": "SetVariable",
 							"dependsOn": [],
-							"userProperties": []
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": ""
+							}
 						},
 						{
 							"name": "Wait2",

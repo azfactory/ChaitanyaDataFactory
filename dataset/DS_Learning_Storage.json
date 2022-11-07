@@ -1,5 +1,5 @@
 {
-	"name": "DS_Learning",
+	"name": "DS_Learning_Storage",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "LS_LearningBlobStorage",
