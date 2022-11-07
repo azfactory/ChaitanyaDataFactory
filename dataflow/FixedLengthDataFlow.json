@@ -32,7 +32,7 @@
 				"ReadFixedLenghtFile derive(empID = substring({_col0_}, 1, 4),",
 				"          Name = substring({_col0_}, 5, 14),",
 				"          State = substring({_col0_}, 15, 2),",
-				"          phone = substring({_col0_}, 16, 10)) ~> derivedColumn1"
+				"          phone = substring({_col0_}, 17, 10)) ~> derivedColumn1"
 			]
 		}
 	}
