@@ -26,7 +26,7 @@
 					"name": "derivedColumn1"
 				},
 				{
-					"name": "select1"
+					"name": "SelectedColumns"
 				}
 			],
 			"scriptLines": [
@@ -47,8 +47,8 @@
 				"          phone",
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true) ~> select1",
-				"select1 sink(allowSchemaDrift: true,",
+				"     skipDuplicateMapOutputs: true) ~> SelectedColumns",
+				"SelectedColumns sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> sink1"
