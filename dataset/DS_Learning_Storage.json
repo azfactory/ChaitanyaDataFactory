@@ -18,10 +18,7 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"fileName": {
-					"value": "@dataset().toBeDeleteFileName",
-					"type": "Expression"
-				},
+				"fileName": "employee.csv",
 				"folderPath": "Employee",
 				"container": "cktcontainer"
 			},
