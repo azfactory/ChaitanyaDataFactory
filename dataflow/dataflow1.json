@@ -12,15 +12,30 @@
 						"referenceName": "DS_Learning_Storage",
 						"type": "DatasetReference"
 					},
-					"name": "FindError"
+					"name": "EmployeeData"
 				}
 			],
 			"sinks": [],
-			"transformations": [],
+			"transformations": [
+				{
+					"name": "split1"
+				}
+			],
 			"scriptLines": [
-				"source(allowSchemaDrift: true,",
-				"     validateSchema: false,",
-				"     ignoreNoFilesFound: false) ~> FindError"
+				"source(output(",
+				"          EmployeeID as short,",
+				"          FirstName as string,",
+				"          LastName as string,",
+				"          EMail as string,",
+				"          Phone as string,",
+				"          HireDate as string,",
+				"          Salary as integer",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: true,",
+				"     ignoreNoFilesFound: false) ~> EmployeeData",
+				"EmployeeData split(isNull(toDate(HireDate,'yyyy-MM-dd')),",
+				"     disjoint: false) ~> split1@(Errorrows, Goodrows)"
 			]
 		}
 	}
