@@ -1,0 +1,27 @@
+{
+	"name": "dataflow1",
+	"properties": {
+		"folder": {
+			"name": "Learning"
+		},
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "DS_Learning_Storage",
+						"type": "DatasetReference"
+					},
+					"name": "FindError"
+				}
+			],
+			"sinks": [],
+			"transformations": [],
+			"scriptLines": [
+				"source(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> FindError"
+			]
+		}
+	}
+}
