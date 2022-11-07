@@ -7,11 +7,32 @@
 		},
 		"type": "MappingDataFlow",
 		"typeProperties": {
-			"sources": [],
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "DS_FixedlenghtFile",
+						"type": "DatasetReference"
+					},
+					"name": "ReadFixedLenghtFile"
+				}
+			],
 			"sinks": [],
-			"transformations": [],
+			"transformations": [
+				{
+					"name": "derivedColumn1"
+				}
+			],
 			"scriptLines": [
-				""
+				"source(output(",
+				"          {_col0_} as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> ReadFixedLenghtFile",
+				"ReadFixedLenghtFile derive(empID = substring({_col0_}, 1, 4),",
+				"          Name = substring({_col0_}, 5, 14),",
+				"          State = substring({_col0_}, 15, 2),",
+				"          phone = substring({_col0_}, 16, 10)) ~> derivedColumn1"
 			]
 		}
 	}
