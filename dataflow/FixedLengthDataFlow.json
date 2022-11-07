@@ -30,9 +30,9 @@
 				"     validateSchema: false,",
 				"     ignoreNoFilesFound: false) ~> ReadFixedLenghtFile",
 				"ReadFixedLenghtFile derive(empID = substring({_col0_}, 1, 4),",
-				"          Name = substring({_col0_}, 5, 18),",
-				"          State = substring({_col0_}, 19, 2),",
-				"          phone = substring({_col0_}, 21, 10)) ~> derivedColumn1"
+				"          Name = substring({_col0_}, 5, 11),",
+				"          State = substring({_col0_}, 16, 2),",
+				"          phone = substring({_col0_}, 18, 10)) ~> derivedColumn1"
 			]
 		}
 	}
