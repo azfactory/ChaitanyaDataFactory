@@ -18,6 +18,10 @@
 			],
 			"sinks": [
 				{
+					"dataset": {
+						"referenceName": "DS_ConvertFixedLenghtToCSV",
+						"type": "DatasetReference"
+					},
 					"name": "sink1"
 				}
 			],
@@ -51,7 +55,8 @@
 				"SelectedColumns sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true) ~> sink1"
+				"     skipDuplicateMapOutputs: true,",
+				"     partitionBy('hash', 1)) ~> sink1"
 			]
 		}
 	}
