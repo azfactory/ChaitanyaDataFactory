@@ -16,10 +16,17 @@
 					"name": "ReadFixedLenghtFile"
 				}
 			],
-			"sinks": [],
+			"sinks": [
+				{
+					"name": "sink1"
+				}
+			],
 			"transformations": [
 				{
 					"name": "derivedColumn1"
+				},
+				{
+					"name": "select1"
 				}
 			],
 			"scriptLines": [
@@ -32,7 +39,19 @@
 				"ReadFixedLenghtFile derive(empID = substring({_col0_}, 1, 4),",
 				"          Name = substring({_col0_}, 5, 14),",
 				"          State = substring({_col0_}, 19, 2),",
-				"          phone = substring({_col0_}, 21, 10)) ~> derivedColumn1"
+				"          phone = substring({_col0_}, 21, 10)) ~> derivedColumn1",
+				"derivedColumn1 select(mapColumn(",
+				"          empID,",
+				"          Name,",
+				"          State,",
+				"          phone",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select1",
+				"select1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> sink1"
 			]
 		}
 	}
