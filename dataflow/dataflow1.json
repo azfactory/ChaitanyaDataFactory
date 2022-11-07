@@ -15,7 +15,22 @@
 					"name": "EmployeeData"
 				}
 			],
-			"sinks": [],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "DS_EmployeeError",
+						"type": "DatasetReference"
+					},
+					"name": "ErrorRowSink"
+				},
+				{
+					"dataset": {
+						"referenceName": "DS_EmployeeGoodRow",
+						"type": "DatasetReference"
+					},
+					"name": "GoodrowSink"
+				}
+			],
 			"transformations": [
 				{
 					"name": "split1"
@@ -35,7 +50,43 @@
 				"     validateSchema: true,",
 				"     ignoreNoFilesFound: false) ~> EmployeeData",
 				"EmployeeData split(isNull(toDate(HireDate,'yyyy-MM-dd')),",
-				"     disjoint: false) ~> split1@(Errorrows, Goodrows)"
+				"     disjoint: false) ~> split1@(Errorrows, Goodrows)",
+				"split1@Errorrows sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          EmployeeID as string,",
+				"          FirstName as string,",
+				"          LastName as string,",
+				"          EMail as string,",
+				"          Phone as string,",
+				"          HireDate as string,",
+				"          Salary as string",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> ErrorRowSink",
+				"split1@Goodrows sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          EmployeeID as integer,",
+				"          FirstName as string,",
+				"          LastName as string,",
+				"          EMail as string,",
+				"          Phone as string,",
+				"          HireDate as date,",
+				"          Salary as decimal(19,4)",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> GoodrowSink"
 			]
 		}
 	}
