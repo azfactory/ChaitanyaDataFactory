@@ -22,7 +22,7 @@
 					"value": "@dataset().toBeDeleteFileName",
 					"type": "Expression"
 				},
-				"folderPath": "Pollution Data/18Oct2022",
+				"folderPath": "Employee",
 				"container": "cktcontainer"
 			},
 			"columnDelimiter": ",",
