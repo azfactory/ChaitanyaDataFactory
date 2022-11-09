@@ -1,0 +1,51 @@
+{
+	"name": "DF_Removeduplicate",
+	"properties": {
+		"folder": {
+			"name": "Learning"
+		},
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "DS_EMPLOYEE",
+						"type": "DatasetReference"
+					},
+					"name": "Employee"
+				},
+				{
+					"dataset": {
+						"referenceName": "DS_EmployeeDUP",
+						"type": "DatasetReference"
+					},
+					"name": "EmployeeDup"
+				}
+			],
+			"sinks": [],
+			"transformations": [
+				{
+					"name": "RemoveDuplicate"
+				}
+			],
+			"scriptLines": [
+				"source(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> Employee",
+				"source(output(",
+				"          {_col0_} as string,",
+				"          {_col1_} as string,",
+				"          {_col2_} as string,",
+				"          {_col3_} as string,",
+				"          {_col4_} as string,",
+				"          {_col5_} as string,",
+				"          {_col6_} as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> EmployeeDup",
+				"Employee, EmployeeDup union(byName: true)~> RemoveDuplicate"
+			]
+		}
+	}
+}

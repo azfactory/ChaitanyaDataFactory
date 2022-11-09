@@ -1,0 +1,24 @@
+{
+	"name": "DS_EmployeeDUP",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_LearningBlobStorage",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "employeeDup.csv",
+				"folderPath": "Employee",
+				"container": "cktcontainer"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": []
+	}
+}
