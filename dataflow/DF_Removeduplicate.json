@@ -58,7 +58,7 @@
 				"     ignoreNoFilesFound: false) ~> EmployeeDup",
 				"Employee, EmployeeDup union(byName: true)~> UnionEmployee",
 				"UnionEmployee aggregate(groupBy(EmployeeID),",
-				"     each(match(name!='EmployeeID'), $$ = first($$))) ~> RemoveDuplicateEmp"
+				"     each(match(name!='EmployeeID'), $$ = last($$))) ~> RemoveDuplicateEmp"
 			]
 		}
 	}
