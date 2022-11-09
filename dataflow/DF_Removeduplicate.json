@@ -25,26 +25,40 @@
 			"sinks": [],
 			"transformations": [
 				{
-					"name": "RemoveDuplicate"
+					"name": "UnionEmployee"
+				},
+				{
+					"name": "RemoveDuplicateEmp"
 				}
 			],
 			"scriptLines": [
-				"source(allowSchemaDrift: true,",
+				"source(output(",
+				"          EmployeeID as short,",
+				"          FirstName as string,",
+				"          LastName as string,",
+				"          EMail as string,",
+				"          Phone as string,",
+				"          HireDate as string,",
+				"          Salary as integer",
+				"     ),",
+				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     ignoreNoFilesFound: false) ~> Employee",
 				"source(output(",
-				"          {_col0_} as string,",
-				"          {_col1_} as string,",
-				"          {_col2_} as string,",
-				"          {_col3_} as string,",
-				"          {_col4_} as string,",
-				"          {_col5_} as string,",
-				"          {_col6_} as string",
+				"          EmployeeID as short,",
+				"          FirstName as string,",
+				"          LastName as string,",
+				"          EMail as string,",
+				"          Phone as string,",
+				"          HireDate as string,",
+				"          Salary as integer",
 				"     ),",
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     ignoreNoFilesFound: false) ~> EmployeeDup",
-				"Employee, EmployeeDup union(byName: true)~> RemoveDuplicate"
+				"Employee, EmployeeDup union(byName: true)~> UnionEmployee",
+				"UnionEmployee aggregate(groupBy(EmployeeID),",
+				"     each(match(name!='EmployeeID'), $$ = first($$))) ~> RemoveDuplicateEmp"
 			]
 		}
 	}
