@@ -22,7 +22,15 @@
 					"name": "EmployeeDup"
 				}
 			],
-			"sinks": [],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "DS_FixedlenghtFile",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
 			"transformations": [
 				{
 					"name": "UnionEmployee"
@@ -58,7 +66,13 @@
 				"     ignoreNoFilesFound: false) ~> EmployeeDup",
 				"Employee, EmployeeDup union(byName: true)~> UnionEmployee",
 				"UnionEmployee aggregate(groupBy(EmployeeID),",
-				"     each(match(name!='EmployeeID'), $$ = last($$))) ~> RemoveDuplicateEmp"
+				"     each(match(name!='EmployeeID'), $$ = last($$))) ~> RemoveDuplicateEmp",
+				"RemoveDuplicateEmp sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     partitionFileNames:['Removedduplocate.csv'],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     partitionBy('hash', 1)) ~> sink1"
 			]
 		}
 	}
