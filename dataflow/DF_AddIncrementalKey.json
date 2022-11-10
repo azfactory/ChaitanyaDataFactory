@@ -44,6 +44,9 @@
 				},
 				{
 					"name": "select1"
+				},
+				{
+					"name": "union1"
 				}
 			],
 			"scriptLines": [
@@ -83,7 +86,7 @@
 				"     stepValue: 1L) ~> surrogateKey1",
 				"surrogateKey1 derive(NewID = toInteger(EmployeeID) + toInteger(NewID)) ~> derivedColumn1",
 				"derivedColumn1 select(mapColumn(",
-				"          NewEmployeeID = NewID,",
+				"          EmployeeID,",
 				"          FirstName,",
 				"          LastName,",
 				"          EMail,",
@@ -92,7 +95,8 @@
 				"          Salary",
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true) ~> select1"
+				"     skipDuplicateMapOutputs: true) ~> select1",
+				"AllEmployee, select1 union(byName: true)~> union1"
 			]
 		}
 	}
