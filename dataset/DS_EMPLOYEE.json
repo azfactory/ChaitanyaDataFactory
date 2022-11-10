@@ -19,6 +19,15 @@
 			"firstRowAsHeader": true,
 			"quoteChar": "\""
 		},
-		"schema": []
+		"schema": [
+			{
+				"name": "Product",
+				"type": "String"
+			},
+			{
+				"name": "Inventory",
+				"type": "String"
+			}
+		]
 	}
 }
