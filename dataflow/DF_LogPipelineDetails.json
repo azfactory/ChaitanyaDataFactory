@@ -17,15 +17,38 @@
 				}
 			],
 			"sinks": [],
-			"transformations": [],
+			"transformations": [
+				{
+					"name": "derivedColumn1"
+				},
+				{
+					"name": "select1"
+				}
+			],
 			"scriptLines": [
+				"parameters{",
+				"     ADF as string,",
+				"     PipelineName as string,",
+				"     TrigerName as string",
+				"}",
 				"source(output(",
 				"          Product as string,",
 				"          Inventory as string",
 				"     ),",
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
-				"     ignoreNoFilesFound: false) ~> source1"
+				"     ignoreNoFilesFound: false) ~> source1",
+				"source1 derive(ADF = $ADF,",
+				"          PipelineName = $PipelineName,",
+				"          TrigerName = $TrigerName,",
+				"     partitionBy('hash', 1)) ~> derivedColumn1",
+				"derivedColumn1 select(mapColumn(",
+				"          ADF,",
+				"          PipelineName,",
+				"          TrigerName",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select1"
 			]
 		}
 	}
