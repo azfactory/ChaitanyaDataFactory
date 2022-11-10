@@ -16,11 +16,21 @@
 				}
 			],
 			"sinks": [],
-			"transformations": [],
+			"transformations": [
+				{
+					"name": "window1"
+				}
+			],
 			"scriptLines": [
-				"source(allowSchemaDrift: true,",
+				"source(output(",
+				"          Product as string,",
+				"          Inventory as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
-				"     ignoreNoFilesFound: false) ~> SalesSource"
+				"     ignoreNoFilesFound: false) ~> SalesSource",
+				"SalesSource window(asc(Inventory, true),",
+				"     RunningTotal = sum(toInteger(Inventory))) ~> window1"
 			]
 		}
 	}
