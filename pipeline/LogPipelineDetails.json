@@ -1,0 +1,10 @@
+{
+	"name": "LogPipelineDetails",
+	"properties": {
+		"description": "Log the parameters of pipeline",
+		"folder": {
+			"name": "Learning"
+		},
+		"annotations": []
+	}
+}
