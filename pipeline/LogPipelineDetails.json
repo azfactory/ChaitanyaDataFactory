@@ -28,9 +28,25 @@
 								"value": "'@{pipeline().Pipeline}'",
 								"type": "Expression"
 							},
-							"TrigerName": {
+							"TriggerName": {
 								"value": "'@{pipeline().TriggerName}'",
 								"type": "Expression"
+							},
+							"TriggerTime": {
+								"value": "'@{pipeline().TriggerTime}'",
+								"type": "Expression"
+							},
+							"LogFileName": {
+								"value": "'@{concat(formatDateTime(utcnow(),'yyyy-MMM-dd'))}'",
+								"type": "Expression"
+							}
+						},
+						"datasetParameters": {
+							"sink1": {
+								"logFile": {
+									"value": "@concat(formatDateTime(utcnow(),'yyyy-MMM-dd'))",
+									"type": "Expression"
+								}
 							}
 						}
 					},
