@@ -1,0 +1,99 @@
+{
+	"name": "DF_AddIncrementalKey",
+	"properties": {
+		"description": "Add incremental key with surrogate key",
+		"folder": {
+			"name": "Learning"
+		},
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "DS_EMPLOYEE",
+						"type": "DatasetReference"
+					},
+					"name": "AllEmployee"
+				},
+				{
+					"dataset": {
+						"referenceName": "DS_EmployeeDUP",
+						"type": "DatasetReference"
+					},
+					"name": "NewEmployee"
+				}
+			],
+			"sinks": [],
+			"transformations": [
+				{
+					"name": "AddDummyCol",
+					"description": "Added dummy col for aggregate"
+				},
+				{
+					"name": "AggregateTOGetmaxID",
+					"description": "Add aggregate columns And get max ID"
+				},
+				{
+					"name": "join1"
+				},
+				{
+					"name": "surrogateKey1"
+				},
+				{
+					"name": "derivedColumn1"
+				},
+				{
+					"name": "select1"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          EmployeeID as short,",
+				"          FirstName as string,",
+				"          LastName as string,",
+				"          EMail as string,",
+				"          Phone as string,",
+				"          HireDate as string,",
+				"          Salary as integer",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> AllEmployee",
+				"source(output(",
+				"          FirstName as string,",
+				"          LastName as string,",
+				"          EMail as string,",
+				"          Phone as string,",
+				"          HireDate as string,",
+				"          Salary as integer",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> NewEmployee",
+				"AllEmployee derive(Dummy = 'dummy') ~> AddDummyCol",
+				"AddDummyCol aggregate(groupBy(Dummy),",
+				"     EmployeeID = max(EmployeeID)) ~> AggregateTOGetmaxID",
+				"AggregateTOGetmaxID, NewEmployee join(1==1,",
+				"     joinType:'cross',",
+				"     matchType:'exact',",
+				"     ignoreSpaces: false,",
+				"     broadcast: 'auto')~> join1",
+				"join1 keyGenerate(output(NewID as long),",
+				"     startAt: 1L,",
+				"     stepValue: 1L) ~> surrogateKey1",
+				"surrogateKey1 derive(NewID = toInteger(EmployeeID) + toInteger(NewID)) ~> derivedColumn1",
+				"derivedColumn1 select(mapColumn(",
+				"          NewEmployeeID = NewID,",
+				"          FirstName,",
+				"          LastName,",
+				"          EMail,",
+				"          Phone,",
+				"          HireDate,",
+				"          Salary",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select1"
+			]
+		}
+	}
+}
