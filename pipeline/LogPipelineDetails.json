@@ -1,7 +1,47 @@
 {
 	"name": "LogPipelineDetails",
 	"properties": {
-		"description": "Log the parameters of pipeline",
+		"description": "Log the parameters of the pipeline",
+		"activities": [
+			{
+				"name": "DF_LogPipelineDetails",
+				"type": "ExecuteDataFlow",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataflow": {
+						"referenceName": "DF_LogPipelineDetails",
+						"type": "DataFlowReference",
+						"parameters": {
+							"ADF": {
+								"value": "'@{pipeline().DataFactory}'",
+								"type": "Expression"
+							},
+							"PipelineName": {
+								"value": "'@{pipeline().Pipeline}'",
+								"type": "Expression"
+							},
+							"TrigerName": {
+								"value": "'@{pipeline().TriggerName}'",
+								"type": "Expression"
+							}
+						}
+					},
+					"compute": {
+						"coreCount": 8,
+						"computeType": "General"
+					},
+					"traceLevel": "Fine"
+				}
+			}
+		],
 		"folder": {
 			"name": "Learning"
 		},
