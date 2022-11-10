@@ -40,6 +40,11 @@
 								"value": "'@{concat(formatDateTime(utcnow(),'yyyy-MMM-dd'),'_Log.csv')}'",
 								"type": "Expression"
 							}
+						},
+						"datasetParameters": {
+							"sink1": {
+								"logFile": "Test"
+							}
 						}
 					},
 					"compute": {
