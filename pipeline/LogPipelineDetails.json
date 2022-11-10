@@ -37,16 +37,8 @@
 								"type": "Expression"
 							},
 							"LogFileName": {
-								"value": "'@{concat(formatDateTime(utcnow(),'yyyy-MMM-dd'))}'",
+								"value": "'@{concat(formatDateTime(utcnow(),'yyyy-MMM-dd'),'_Log.csv')}'",
 								"type": "Expression"
-							}
-						},
-						"datasetParameters": {
-							"sink1": {
-								"logFile": {
-									"value": "@concat(formatDateTime(utcnow(),'yyyy-MMM-dd'),'log.csv')",
-									"type": "Expression"
-								}
 							}
 						}
 					},
