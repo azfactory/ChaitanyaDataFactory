@@ -61,7 +61,7 @@
 				"     upsertable:true,",
 				"     keys:['EmployeeID'],",
 				"     format: 'table',",
-				"     postSQLs:['INSERT INTO [dbo].[EmployeeError]\\n           ([EmployeeID]\\n           ,[FirstName]\\n           ,[LastName]\\n           ,[EMail]\\n           ,[Phone]\\n           ,[HireDate]\\n           ,[Salary])\\n     VALUES\\n          ( 8,\\'John8\\',\\'King8\\',\\'john.king@abc.com\\',1231230000,\"2015-01-01\",33000)'],",
+				"     postSQLs:['INSERT INTO [dbo].[EmployeeError]\\n           ([EmployeeID]\\n           ,[FirstName]\\n           ,[LastName]\\n           ,[EMail]\\n           ,[Phone]\\n           ,[HireDate]\\n           ,[Salary])\\n     VALUES\\n          ( 8,\\'John8\\',\\'King8\\',\\'john.king@abc.com\\',1231230000,2015-01-01,33000)'],",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true,",
 				"     mapColumn(",
