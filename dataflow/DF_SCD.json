@@ -16,8 +16,20 @@
 					"name": "EmployeeList"
 				}
 			],
-			"sinks": [],
-			"transformations": [],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "DS_EmployeeGoodRow",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
+			"transformations": [
+				{
+					"name": "alterRow1"
+				}
+			],
 			"scriptLines": [
 				"source(output(",
 				"          EmployeeID as integer,",
@@ -25,7 +37,7 @@
 				"          LastName as string,",
 				"          EMail as string,",
 				"          Phone as string,",
-				"          HireDate as string,",
+				"          HireDate as date,",
 				"          Salary as integer",
 				"     ),",
 				"     allowSchemaDrift: true,",
@@ -33,7 +45,36 @@
 				"     ignoreNoFilesFound: false,",
 				"     enableCdc: true,",
 				"     mode: 'read',",
-				"     skipInitialLoad: true) ~> EmployeeList"
+				"     skipInitialLoad: true) ~> EmployeeList",
+				"EmployeeList alterRow(upsertIf(1==1)) ~> alterRow1",
+				"alterRow1 sink(allowSchemaDrift: true,",
+				"     validateSchema: true,",
+				"     input(",
+				"          EmployeeID as integer,",
+				"          FirstName as string,",
+				"          LastName as string,",
+				"          EMail as string,",
+				"          Phone as string,",
+				"          HireDate as date,",
+				"          Salary as decimal(19,4)",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:false,",
+				"     updateable:false,",
+				"     upsertable:true,",
+				"     keys:['EmployeeID'],",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     mapColumn(",
+				"          EmployeeID,",
+				"          FirstName,",
+				"          LastName,",
+				"          EMail,",
+				"          Phone,",
+				"          HireDate,",
+				"          Salary",
+				"     )) ~> sink1"
 			]
 		}
 	}
