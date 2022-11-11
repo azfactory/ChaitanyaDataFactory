@@ -7,11 +7,33 @@
 		},
 		"type": "MappingDataFlow",
 		"typeProperties": {
-			"sources": [],
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "DS_EMPLOYEE",
+						"type": "DatasetReference"
+					},
+					"name": "EmployeeList"
+				}
+			],
 			"sinks": [],
 			"transformations": [],
 			"scriptLines": [
-				""
+				"source(output(",
+				"          EmployeeID as integer,",
+				"          FirstName as string,",
+				"          LastName as string,",
+				"          EMail as string,",
+				"          Phone as string,",
+				"          HireDate as string,",
+				"          Salary as integer",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false,",
+				"     enableCdc: true,",
+				"     mode: 'read',",
+				"     skipInitialLoad: true) ~> EmployeeList"
 			]
 		}
 	}
