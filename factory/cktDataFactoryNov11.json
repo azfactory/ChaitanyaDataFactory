@@ -2,7 +2,7 @@
 	"name": "cktDataFactoryNov11",
 	"properties": {
 		"globalConfigurations": {
-			"PipelineBillingEnabled": "true"
+			"PipelineBillingEnabled": "false"
 		}
 	},
 	"location": "eastus"
