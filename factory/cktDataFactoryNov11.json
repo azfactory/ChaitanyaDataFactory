@@ -1,4 +1,9 @@
 {
 	"name": "cktDataFactoryNov11",
-	"location": "centralus"
+	"properties": {
+		"globalConfigurations": {
+			"PipelineBillingEnabled": "false"
+		}
+	},
+	"location": "eastus"
 }

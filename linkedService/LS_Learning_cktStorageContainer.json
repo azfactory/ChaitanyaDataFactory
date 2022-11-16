@@ -1,0 +1,16 @@
+{
+	"name": "LS_Learning_cktStorageContainer",
+	"properties": {
+		"description": "This is a learning LS ",
+		"annotations": [],
+		"type": "AzureBlobFS",
+		"typeProperties": {
+			"url": "https://cktstorage.dfs.core.windows.net/",
+			"credential": {
+				"referenceName": "CKTcredential",
+				"type": "CredentialReference"
+			}
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/linkedservices"
+}

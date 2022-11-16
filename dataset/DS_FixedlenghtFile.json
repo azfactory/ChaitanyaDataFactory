@@ -1,0 +1,26 @@
+{
+	"name": "DS_FixedlenghtFile",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_LearningBlobStorage",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Learning"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "empFixedLength.txt",
+				"folderPath": "Employee",
+				"container": "cktcontainer"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"quoteChar": "\""
+		},
+		"schema": []
+	}
+}

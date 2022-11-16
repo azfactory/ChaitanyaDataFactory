@@ -1,7 +1,7 @@
 {
-	"name": "InputLinkedServiceStorageBlob",
+	"name": "LS_LearningBlobStorage",
 	"properties": {
-		"description": "Pollution Data Input Blob - 03 dec",
+		"description": "This is for learning - Created as BLOB ",
 		"annotations": [],
 		"type": "AzureBlobStorage",
 		"typeProperties": {
@@ -19,6 +19,5 @@
 			},
 			"accountKind": "StorageV2"
 		}
-	},
-	"type": "Microsoft.DataFactory/factories/linkedservices"
+	}
 }

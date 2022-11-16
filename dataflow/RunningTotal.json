@@ -1,0 +1,37 @@
+{
+	"name": "RunningTotal",
+	"properties": {
+		"folder": {
+			"name": "Learning"
+		},
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "DS_EMPLOYEE",
+						"type": "DatasetReference"
+					},
+					"name": "SalesSource"
+				}
+			],
+			"sinks": [],
+			"transformations": [
+				{
+					"name": "window1"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          Product as string,",
+				"          Inventory as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> SalesSource",
+				"SalesSource window(asc(Inventory, true),",
+				"     RunningTotal = sum(toInteger(Inventory))) ~> window1"
+			]
+		}
+	}
+}

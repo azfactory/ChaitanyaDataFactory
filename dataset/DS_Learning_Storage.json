@@ -1,0 +1,26 @@
+{
+	"name": "DS_Learning_Storage",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_LearningBlobStorage",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Learning"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"folderPath": "Employee",
+				"container": "cktcontainer"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": []
+	}
+}

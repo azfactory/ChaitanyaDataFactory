@@ -1,0 +1,79 @@
+{
+	"name": "DF_SCD",
+	"properties": {
+		"description": "Slowly Change Dimension ",
+		"folder": {
+			"name": "Learning"
+		},
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "DS_EMPLOYEE",
+						"type": "DatasetReference"
+					},
+					"name": "EmployeeList"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "DS_EmployeeGoodRow",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
+			"transformations": [
+				{
+					"name": "alterRow1"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          EmployeeID as integer,",
+				"          FirstName as string,",
+				"          LastName as string,",
+				"          EMail as string,",
+				"          Phone as string,",
+				"          HireDate as date,",
+				"          Salary as integer",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> EmployeeList",
+				"EmployeeList alterRow(upsertIf(1==1)) ~> alterRow1",
+				"alterRow1 sink(allowSchemaDrift: true,",
+				"     validateSchema: true,",
+				"     input(",
+				"          EmployeeID as integer,",
+				"          FirstName as string,",
+				"          LastName as string,",
+				"          EMail as string,",
+				"          Phone as string,",
+				"          HireDate as date,",
+				"          Salary as decimal(19,4)",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:false,",
+				"     updateable:false,",
+				"     upsertable:true,",
+				"     keys:['EmployeeID'],",
+				"     format: 'table',",
+				"     postSQLs:['INSERT INTO [dbo].[EmployeeError]\\n           ([EmployeeID]\\n           ,[FirstName]\\n           ,[LastName]\\n           ,[EMail]\\n           ,[Phone]\\n           ,[HireDate]\\n           ,[Salary])\\n     VALUES\\n          ( 8,\\'John8\\',\\'King8\\',\\'john.king@abc.com\\',1231230000,2015-01-01,33000)'],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     mapColumn(",
+				"          EmployeeID,",
+				"          FirstName,",
+				"          LastName,",
+				"          EMail,",
+				"          Phone,",
+				"          HireDate,",
+				"          Salary",
+				"     )) ~> sink1"
+			]
+		}
+	}
+}

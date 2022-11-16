@@ -1,0 +1,73 @@
+{
+	"name": "DF_LogPipelineDetails",
+	"properties": {
+		"description": "Log the parameters of the pipeline in log file",
+		"folder": {
+			"name": "Learning"
+		},
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "DS_EMPLOYEE",
+						"type": "DatasetReference"
+					},
+					"name": "source1"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "DS_EmployeeDUP",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
+			"transformations": [
+				{
+					"name": "derivedColumn1"
+				},
+				{
+					"name": "select1"
+				}
+			],
+			"scriptLines": [
+				"parameters{",
+				"     ADF as string,",
+				"     PipelineName as string,",
+				"     TriggerName as string,",
+				"     TriggerTime as string,",
+				"     LogFileName as string",
+				"}",
+				"source(output(",
+				"          Product as string,",
+				"          Inventory as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> source1",
+				"source1 derive(ADF = $ADF,",
+				"          PipelineName = $PipelineName,",
+				"          TriggerName = $TriggerName,",
+				"          TrigerTime = $TriggerTime,",
+				"     partitionBy('hash', 1)) ~> derivedColumn1",
+				"derivedColumn1 select(mapColumn(",
+				"          ADF,",
+				"          PipelineName,",
+				"          TrigerName = TriggerName,",
+				"          TrigerTime",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select1",
+				"select1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     partitionFileNames:[($LogFileName)],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     partitionBy('hash', 1)) ~> sink1"
+			]
+		}
+	}
+}

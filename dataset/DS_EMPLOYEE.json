@@ -1,0 +1,33 @@
+{
+	"name": "DS_EMPLOYEE",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_LearningBlobStorage",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "Allemployee.csv",
+				"folderPath": "Employee",
+				"container": "cktcontainer"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"name": "Product",
+				"type": "String"
+			},
+			{
+				"name": "Inventory",
+				"type": "String"
+			}
+		]
+	}
+}

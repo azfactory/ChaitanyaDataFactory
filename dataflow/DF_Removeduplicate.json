@@ -1,0 +1,74 @@
+{
+	"name": "DF_Removeduplicate",
+	"properties": {
+		"folder": {
+			"name": "Learning"
+		},
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "DS_EMPLOYEE",
+						"type": "DatasetReference"
+					},
+					"name": "Employee"
+				},
+				{
+					"dataset": {
+						"referenceName": "DS_EmployeeDUP",
+						"type": "DatasetReference"
+					},
+					"name": "EmployeeDup"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "DS_FixedlenghtFile",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
+			"transformations": [
+				{
+					"name": "UnionEmployee"
+				},
+				{
+					"name": "RemoveDuplicateEmp"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          Product as string,",
+				"          Inventory as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> Employee",
+				"source(output(",
+				"          EmployeeID as short,",
+				"          FirstName as string,",
+				"          LastName as string,",
+				"          EMail as string,",
+				"          Phone as string,",
+				"          HireDate as string,",
+				"          Salary as integer",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> EmployeeDup",
+				"Employee, EmployeeDup union(byName: true)~> UnionEmployee",
+				"UnionEmployee aggregate(groupBy(EmployeeID),",
+				"     each(match(name!='EmployeeID'), $$ = last($$))) ~> RemoveDuplicateEmp",
+				"RemoveDuplicateEmp sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     partitionFileNames:['Removedduplocate.csv'],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     partitionBy('hash', 1)) ~> sink1"
+			]
+		}
+	}
+}

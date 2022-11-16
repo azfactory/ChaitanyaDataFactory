@@ -1,0 +1,26 @@
+{
+	"name": "DS_ConvertFixedLenghtToCSV",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_LearningBlobStorage",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Learning"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "FixedtoCSV.csv",
+				"folderPath": "Employee",
+				"container": "cktcontainer"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"quoteChar": "\""
+		},
+		"schema": []
+	}
+}
