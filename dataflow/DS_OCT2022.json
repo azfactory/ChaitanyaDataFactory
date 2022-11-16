@@ -1,0 +1,23 @@
+{
+	"name": "DS_OCT2022",
+	"properties": {
+		"description": "Test the GIT integration",
+		"folder": {
+			"name": "TestDataFlow"
+		},
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"name": "source1"
+				}
+			],
+			"sinks": [],
+			"transformations": [],
+			"scriptLines": [
+				"source(allowSchemaDrift: true,",
+				"     validateSchema: false) ~> source1"
+			]
+		}
+	}
+}
