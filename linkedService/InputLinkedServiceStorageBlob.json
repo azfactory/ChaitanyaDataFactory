@@ -5,9 +5,9 @@
 		"annotations": [],
 		"type": "AzureBlobStorage",
 		"typeProperties": {
-			"serviceEndpoint": "https://cktstorage.blob.core.windows.net/",
-			"tenant": "b6798e4b-0a81-4604-a9b4-25cdcc7ec6bc",
-			"servicePrincipalId": "6e5f0e8b-772e-4b30-9f73-785ab5bf00fa",
+			"serviceEndpoint": "https://cktstoragenov.blob.core.windows.net/",
+			"tenant": "63f75830-9d2d-4136-b94e-3faa57982c00",
+			"servicePrincipalId": "f75e77b9-1bfb-4865-bb58-f495c9757abc",
 			"servicePrincipalCredentialType": "ServicePrincipalKey",
 			"servicePrincipalCredential": {
 				"type": "AzureKeyVaultSecret",
@@ -15,7 +15,7 @@
 					"referenceName": "LS_AzureKeyVault",
 					"type": "LinkedServiceReference"
 				},
-				"secretName": "cktsecretkeyvault"
+				"secretName": "cktappsecrate"
 			},
 			"accountKind": "StorageV2"
 		}
