@@ -1,7 +1,7 @@
 {
 	"name": "LS_AzureKeyVault",
 	"properties": {
-		"description": "03 dec",
+		"description": "28 Nov 22",
 		"annotations": [],
 		"type": "AzureKeyVault",
 		"typeProperties": {
