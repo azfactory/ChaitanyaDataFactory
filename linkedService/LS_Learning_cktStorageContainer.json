@@ -5,7 +5,7 @@
 		"annotations": [],
 		"type": "AzureBlobFS",
 		"typeProperties": {
-			"url": "https://cktstorage.dfs.core.windows.net/",
+			"url": "https://cktstoragenov.dfs.core.windows.net/",
 			"credential": {
 				"referenceName": "CKTcredential",
 				"type": "CredentialReference"
