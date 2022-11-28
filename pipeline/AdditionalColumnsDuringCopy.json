@@ -170,16 +170,6 @@
 									"type": "String",
 									"physicalType": "String"
 								}
-							},
-							{
-								"source": {
-									"name": "PipelineName"
-								},
-								"sink": {
-									"name": "Static",
-									"type": "String",
-									"physicalType": "String"
-								}
 							}
 						],
 						"typeConversion": true,
