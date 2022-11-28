@@ -10,7 +10,7 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"fileName": "Allemployee.csv",
+				"fileName": "employee.csv",
 				"folderPath": "Employee",
 				"container": "cktcontainer"
 			},
