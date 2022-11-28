@@ -67,7 +67,6 @@
 							{
 								"source": {
 									"name": "EmployeeID",
-									"type": "Int32",
 									"physicalType": "String"
 								},
 								"sink": {
@@ -79,7 +78,6 @@
 							{
 								"source": {
 									"name": "FirstName",
-									"type": "String",
 									"physicalType": "String"
 								},
 								"sink": {
@@ -91,7 +89,6 @@
 							{
 								"source": {
 									"name": "LastName",
-									"type": "String",
 									"physicalType": "String"
 								},
 								"sink": {
@@ -103,7 +100,6 @@
 							{
 								"source": {
 									"name": "EMail",
-									"type": "String",
 									"physicalType": "String"
 								},
 								"sink": {
@@ -115,7 +111,6 @@
 							{
 								"source": {
 									"name": "Phone",
-									"type": "String",
 									"physicalType": "String"
 								},
 								"sink": {
@@ -127,7 +122,6 @@
 							{
 								"source": {
 									"name": "HireDate",
-									"type": "String",
 									"physicalType": "String"
 								},
 								"sink": {
@@ -139,7 +133,6 @@
 							{
 								"source": {
 									"name": "Salary",
-									"type": "String",
 									"physicalType": "String"
 								},
 								"sink": {
@@ -150,8 +143,7 @@
 							},
 							{
 								"source": {
-									"name": "FileName",
-									"type": "String"
+									"name": "FileName"
 								},
 								"sink": {
 									"name": "FileName",
@@ -161,8 +153,7 @@
 							},
 							{
 								"source": {
-									"name": "NewFirstName",
-									"type": "String"
+									"name": "NewFirstName"
 								},
 								"sink": {
 									"name": "NewFirstName",
@@ -172,8 +163,7 @@
 							},
 							{
 								"source": {
-									"name": "PipelineName",
-									"type": "String"
+									"name": "PipelineName"
 								},
 								"sink": {
 									"name": "PipelineName",
@@ -183,8 +173,7 @@
 							},
 							{
 								"source": {
-									"name": "Static",
-									"type": "String"
+									"name": "PipelineName"
 								},
 								"sink": {
 									"name": "Static",
