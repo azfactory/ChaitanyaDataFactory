@@ -7,15 +7,9 @@
 		"typeProperties": {
 			"serviceEndpoint": "https://cktstoragenov.blob.core.windows.net/",
 			"tenant": "63f75830-9d2d-4136-b94e-3faa57982c00",
-			"servicePrincipalId": "f75e77b9-1bfb-4865-bb58-f495c9757abc",
-			"servicePrincipalCredentialType": "ServicePrincipalKey",
-			"servicePrincipalCredential": {
-				"type": "AzureKeyVaultSecret",
-				"store": {
-					"referenceName": "LS_AzureKeyVault",
-					"type": "LinkedServiceReference"
-				},
-				"secretName": "cktappsecrate"
+			"credential": {
+				"referenceName": "CKTcredential",
+				"type": "CredentialReference"
 			},
 			"accountKind": "StorageV2"
 		}
