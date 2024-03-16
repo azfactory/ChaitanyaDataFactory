@@ -1,0 +1,9 @@
+{
+	"name": "ck-adf-dev",
+	"location": "centralindia",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "3e386c89-6946-4b9d-ab14-9b45c8ace6e5",
+		"tenantId": "a00d7dff-3b91-4ac1-b9c1-7ab7b949082a"
+	}
+}
